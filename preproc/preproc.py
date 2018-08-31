@@ -27,7 +27,7 @@ __all__     = ['draw_ROI',
 
 def draw_ROI(img, title, ratio=0.85):
 	"""
-	This function allow to select interactively a rectangular region of interest over an image.
+	This functions allow to select interactively a rectangular region of interest over an image.
 	The function returns the ROI coordinates.
 
 	Parameters
@@ -132,11 +132,12 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 						 crop_file='', crop_coor=(), crop_draw=True,
 						 min_denom=1.0e-6,  min_ratio=1e-6, max_ratio=10.0,
 						 mode='mean', log=False,  sino_order=False, show_opt='mean'):
-
-
+	"""
+	This function computes the normalization of the projection data using dark
+	and flat images. If the source
+	"""
 	if(min_ratio<=0.0):
 		raise ValueError('The parameter min_ratio must be positive.')
-
 	if(max_ratio<=0.0):
 		raise ValueError('The parameter min_ratio must be positive.')
 
@@ -565,7 +566,7 @@ def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=Tr
 
 def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None, theta=None, nroi=None, ystep=5):
 	"""
-	This function computes the 
+	This function computes the
 	specificare che l'array deve essere uno stack di proiezioni e non uno stack di sinogrammi
 	"""
 
