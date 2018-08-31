@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import sin, cos
 import matplotlib as mpl
-mpl.use('TkAgg')  # or whatever other backend that you want
+mpl.use('TkAgg')
 import matplotlib.pyplot as plt
 from skimage.transform import rotate
 from matplotlib.offsetbox import AnchoredText
@@ -19,20 +19,19 @@ __version__ = "0.1.0"
 __all__     = ['draw_ROI',
 			   'normalize_proj',
 			   'log_transform',
+			   'find_COR',
 			   'correction_COR',
 			   'remove_outliers',
-			   'find_COR',
 			   'remove_outliers_stack'
 			  ]
 
 def draw_ROI(img, title, ratio=0.85):
 	"""
-	This functions allow to select interactively a rectangular region of interest over an image.
-	The function returns the ROI coordinates.
+	This function allows to select interactively a rectangular region of interest (ROI)
+	over an image. The function returns the ROI coordinates.
 
 	Parameters
 	----------
-
 	img : 2d array
 		The image on which the dose roi is drawn.
 
@@ -40,8 +39,8 @@ def draw_ROI(img, title, ratio=0.85):
 		String defining the title of the window shown.
 
 	ratio : float, optional
-		The filling ratio of the windows respect to the screen resolution.
-    It must be a number between 0 and 1. The default value is 0.8.
+		The filling ratio of the window respect to the screen resolution.
+		It must be a number between 0 and 1. The default value is 0.85.
 
 	Returns
 	-------
@@ -60,6 +59,9 @@ def draw_ROI(img, title, ratio=0.85):
 	"""
 	if not (0 < ratio <= 1):
 		raise ValueError('The variable ratio must be between 0 and 1.')
+
+	if (img.ndim != 2):
+		raise ValueError("The image array must be two-dimensional.")
 
 	# window size settings
 	(width, height) = get_screen_resolution()
@@ -98,6 +100,15 @@ def draw_ROI(img, title, ratio=0.85):
 
 
 def _normalize (proj, dark, flat, mode='mean', min_denom=1.0e-6, out=None):
+	"""
+	This function computes the normalization  of the projection data using dark
+	and flat images by performing the ratio: (proj - dark) / (flat - dark).
+	The ratio is performed using the mean or the median of the dark and flat
+	images (defined by the mode). The division by zero is prevented by assigning
+	to the denominator a small value (min_denom) if (flat - dark  == 0). The
+	results can be stored in an output array byusing the 'out' parameter. If
+	same as proj, the computation is done in place.
+	"""
 
 	if(min_denom<=0.0):
 		raise ValueError('The parameter min_ratio must be positive.')
