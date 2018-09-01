@@ -27,8 +27,8 @@ __all__     = ['draw_ROI',
 
 def draw_ROI(img, title, ratio=0.85):
 	"""
-	This function allows to select interactively a rectangular region of interest (ROI)
-	over an image. The function returns the ROI coordinates.
+	This function allows to select interactively a rectangular region of interest
+	(ROI) over an image. The function returns the ROI coordinates.
 
 	Parameters
 	----------
@@ -103,10 +103,10 @@ def _normalize (proj, dark, flat, mode='mean', min_denom=1.0e-6, out=None):
 	"""
 	This function computes the normalization  of the projection data using dark
 	and flat images by performing the ratio: (proj - dark) / (flat - dark).
-	The ratio is performed using the mean or the median of the dark and flat
+	The ratio is computed using the mean or the median of the dark and flat
 	images (defined by the mode). The division by zero is prevented by assigning
 	to the denominator a small value (min_denom) if (flat - dark  == 0). The
-	results can be stored in an output array byusing the 'out' parameter. If
+	result can be stored in an output array by using the 'out' parameter. If
 	same as proj, the computation is done in place.
 	"""
 
@@ -118,7 +118,8 @@ def _normalize (proj, dark, flat, mode='mean', min_denom=1.0e-6, out=None):
 	elif(mode == 'median'):
 		func = np.median
 	else:
-		raise ValueError('Not valid function for projecting flat and dark images along z axis. Set mean or median')
+		raise ValueError('Not valid function for projecting flat and dark images\
+		 				  along z axis. Set mean or median')
 
 	mean_flat  = func(flat, axis=0).astype(np.float32)
 	mean_dark  = func(dark, axis=0).astype(np.float32)
@@ -145,7 +146,129 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 						 mode='mean', log=False,  sino_order=False, show_opt='mean'):
 	"""
 	This function computes the normalization of the projection data using dark
-	and flat images. If the source
+	and flat images. If the source intensity is not stable the images can
+	be normalized respect to the radiation dose (see formula 2.2 in [1]_).
+	In this case, the user must specify a region (the dose ROI) where the sample
+	never appears. If not interested in reconstructing the entire field-of-view,
+	the normalization can be performed using only a region of interest (crop ROI)
+	of all projections.
+	The dose ROI and the crop ROI can be drawn interactively on the image or
+	specified using the index coordinates or an ImageJ .roi file. A stack of dark
+	and flat images is required and the median or the mean of the stack is
+	used to compute the main fomula.
+
+	Parameters
+	----------
+	proj : ndarray
+		A three-dimensional stack of raw projections.
+		The 0-axis represents theta.
+
+	dark: ndarray
+		A three-dimensional stack of dark-field images.
+
+	flat : ndarray
+		A three-dimensional stack of flat-field images.
+
+	proj_180: 2d arrays, optional
+		The projection at 180 degree. Specify it only if it is not already
+		included in the stack `proj`. It is disabled by default (None).
+
+	out : ndarray, optional
+		The output array returned by the function. If it is the same as proj,
+		the computation will be done in place.
+
+	dose_file : str, optional
+		String defining the path or the name of the Image ROI file that includes
+		the dose ROI.
+
+	dose_coor : tuple, optional
+		Tuple defining the indexes range for each axis of the ROI dose.
+		Specify it in this way: ``(row_start, row_end, col_start, col_end)``
+
+	dose_draw : bool, optional
+		If True the dose ROI is selected interactively on the image by the user.
+		The default is True.
+
+	crop_file : str, optional
+		String defining the path or the name of the Image ROI file that includes
+		the ROI to crop.
+
+	crop_coor : tuple, optional
+		Tuple defining the indexes range, for each axis, of the ROI to crop.
+		Specify it in this way: ``(row_start, row_end, col_start, col_end)``
+
+	crop_draw : bool, optional
+		If True the ROI to crop is selected interactively on the image by the user.
+		The default is True.
+
+	min_denom : float, optional
+		Minimum permitted value of the denominator. It must be a small number
+		that prevents the division by zero. Defalut value is ``1.0e-6``.
+
+	min_ratio : float, optional
+		Minimum permitted value of normalized projections. It must be a small
+		positive number that prevents negative values normalized data.
+		Defalut value is ``1.0e-6``.
+
+	max_ratio : float, optional
+		Maximum permitted value of normalized projections. It must be a
+		positive number. It mitigates the magnitude of the bright outliers within
+		normalized data. Defalut value is ``10``.
+
+	log : bool, optional
+		If ``True`` the log-transform of the normalized data is performed. If
+		``False``, the normalized data without log-transform are returned.
+		Default value is ``False``.
+
+	mode : string, optional
+	 	If `dose_draw` or `crop_draw` is ``True`` the user can select interactively
+		the ROI. A window showing a representative image of the projection stack
+		is created. This image can be the mean or the standard deviation computed
+		pixel-wise over the projection stack. Hence, allowed values of `mode` are
+		``mean`` and ``std``. Default value is ``mean``.
+
+	sino_order : bool, optional
+		If ``True`` a stack of sinograms is returned (0 axis represents the
+		projections y-axis). If ``False`` a stack of projections is returned
+		(0 axis represents theta). Default value is ``False``.
+
+	Returns
+	-------
+	out : ndarray
+		Three-dimensional stack of the normalized projections.
+
+	out_180 : 2d arrays
+		The normalized projection at 180 degree. It is returned only
+		if `proj_180` is an array.
+
+	References
+	----------
+	.. [1] D. Micieli et al., A comparative analysis of reconstruction methods
+	 applied to Neutron Tomography, Journal of Instrumentation, Volume 13,
+	 June 2018.
+
+	Examples
+	--------
+	Normalize dataset selecting interactively the ROI to crop and the dose ROI.
+	>>> import neutompy as ntp
+	>>> norm =  ntp.norm_proj(proj, dark, flat, dose_draw=True, crop_draw=True)
+
+	Normalize dataset and the raw projection at 180 degree:
+	>>> fname  = ntp.get_image_gui('', message = 'Select raw projection at 180°...')
+	>>> img180 = ntp.read_image(fname)
+	>>> norm, norm_180 = ntp.norm_proj(proj, dark, flat, proj_180=img180)
+
+	Normalize dataset using two ImageJ .roi file to define the ROI to crop and
+	the dose ROI:
+	>>> norm = ntp.norm_proj(proj, dark, flat, dose_file='./dose.roi', crop_file='./crop.roi'
+							 dose_draw=False, crop_draw=False)
+
+	Normalize the dataset with the log-transform:
+	>>> norm = ntp.norm_proj(proj, dark, flat, log=True)
+
+	Trivial data normalization using the whole field of view and without the
+	dose correction:
+	>>> norm = ntp.norm_proj(proj, dark, flat, dose_draw=False, crop_draw=False)
 	"""
 	if(min_ratio<=0.0):
 		raise ValueError('The parameter min_ratio must be positive.')
@@ -157,7 +280,6 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 
 	if not (proj.ndim == 3 and dark.ndim == 3 and flat.ndim == 3):
 		raise ValueError('All images stack must have three dimesions.')
-
 
 	if type(proj_180) is np.ndarray:
 		if (proj_180.ndim !=2):
@@ -195,7 +317,9 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 	elif (show_opt=='std'):
 		func_show = np.std
 	else:
-		raise ValueError('Not valid value of the variable show_opt. Choose "mean" or "std" to show the mean or the standard deviation computed pixel-wise over all projections.')
+		raise ValueError('Not valid value of the variable show_opt. Choose "mean"\
+		 or "std" to show the mean or the standard deviation computed pixel-wise over\
+		 all projections.')
 
 	# get the ROI to CROP
 	if(cropON):
@@ -248,7 +372,8 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 		elif(mode=='median'):
 			func = np.median
 		else:
-			raise ValueError('Not valid function for projecting flat and dark images along z axis.Set mean or media.')
+			raise ValueError('Not valid function for projecting flat and dark images along z axis.\
+							Set mean or media.')
 
 		mean_flat  = func(flat[:, rmin_d:rmax_d, cmin_d:cmax_d], axis=0).astype(np.float32)
 		mean_dark  = func(dark[:, rmin_d:rmax_d, cmin_d:cmax_d], axis=0).astype(np.float32)
@@ -319,7 +444,8 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 
 def log_transform(norm_proj, out=None):
 	"""
-	This function computes the minus log of an array. In trasmission CT the input array must be the normalized dataset after flat-fielding correction.
+	This function computes the minus log of an array. In trasmission CT the input\
+	array must be the normalized dataset after flat-fielding correction.
 
 	Parameters
     ----------
@@ -378,7 +504,8 @@ def rotate_sitk(img, theta, interpolator=sitk.sitkLinear):
 
 	th = -np.deg2rad(theta)
 	l1,l2 = img.shape
-	imgpad_size = np.array([ int(round(abs(l1*cos(th)) + abs(l2*sin(th)))), int(round(abs(l2*cos(th)) + abs(l1*sin(th)))) ])
+	imgpad_size = np.array([ int(round(abs(l1*cos(th)) + abs(l2*sin(th)))),
+	 						int(round(abs(l2*cos(th)) + abs(l1*sin(th)))) ])
 
 
 	before =  (imgpad_size - np.array(img.shape))//2
@@ -397,9 +524,52 @@ def rotate_sitk(img, theta, interpolator=sitk.sitkLinear):
 
 
 def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=True):
+	"""
+	This function estimates the offset and the tilt angle of the rotation axis
+	respect to the detector using the projections at 0 and at 180 degree. The user
+	selects interactively different regions where the sample is visible. Once the
+	position of the rotation axis is found the results are shown in two figures.
+	In the first are shown the computed rotation axis and the image obtained as
+	proj_0 - pro_180[:,::-1] (the projection at 180 is flipped horizontally)
+	before the correction.
+	The second figure shows the difference image proj_0 - pro_180[:,::-1] after
+	the correction and the histogram of abs(proj_0 - pro_180[:,::-1]).
 
+	Parameters
+	----------
+	proj_0 : 2d array
+		The projection at 0 degrees.
 
+	proj_180 : 2d array
+		The projection at 180 degrees.
 
+	nroi : int, optional
+		The number of the region of interest to select  for the computation
+		of the rotation axis position. Default is None, hence the value is read
+		as input from keyboard.
+
+	ref_proj: 2d array
+		The image shown to select the region of interest. Default is None, hence
+		proj_0 is shown.
+	
+	ystep: int, optional
+		The center of rotation position is computed every `ystep`. Default value
+		is 5.
+
+	ShowResults: bool, optional
+		If True, the the two figures that summarize the result are shown.
+		Default is True.
+
+	Returns
+	-------
+	middle_shift : float
+		The horizontal shift of the rotation axis respect to the center of the
+		detector.
+
+	theta : float
+		The tilt angle formed by the rotation axis and the vertical axis of the
+		detector.
+	"""
 	if (ref_proj is None):
 		ref_proj = proj_0
 
@@ -417,7 +587,9 @@ def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=Tr
 	print('> Finding the rotation axis position...')
 	# set ROI number
 	if not nroi:
-		print('It is necessary to select one or multiple regions where the sample is present.\nThen you must draw the different regions vertically starting from top to bottom.')
+		print('It is necessary to select one or multiple regions where the sample\
+		 	is present.\nThen you must draw the different regions vertically starting\
+		 	from top to bottom.')
 		while True:
 			nroi = input('> Insert the number of regions to select: ')
 			if(nroi.isdigit() and int(nroi)>0):
@@ -602,7 +774,10 @@ def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None, the
 			shift, theta = find_COR(proj_0, proj_180, nroi=nroi, ref_proj=proj2show, ystep=ystep, ShowResults=True)
 
 			while True:
-					ans = input('> COR found. Do you want to correct all projections? \n[Y] Yes, correct them.  \n[N] No, find again the COR. \n[C] Cancel and abort the script. \nType your answer and press [Enter] :')
+					ans = input('> COR found. Do you want to correct all projections?\
+					 \n[Y] Yes, correct them.  \n[N] No, find again the COR.\
+					 \n[C] Cancel and abort the script.\
+					 \nType your answer and press [Enter] :')
 					if(ans=='Y' or ans=='y'):
 						plt.close('all')
 						condition = False
