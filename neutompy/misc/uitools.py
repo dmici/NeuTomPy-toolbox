@@ -44,8 +44,8 @@ def get_image_gui(initialdir='', message='Select image...'):
 
 	while True:
 		fname = filedialog.askopenfilename(initialdir=initialdir, title=message,
-											filetypes = (("Image files", "*.tif *.tiff *.fits"),
-											("TIFF files","*.tif *.tiff"),("FITS files","*.fits")))
+						filetypes = (("Image files", "*.tif *.tiff *.fits"),
+						("TIFF files","*.tif *.tiff"),("FITS files","*.fits")))
 
 		if(fname):
 			break
