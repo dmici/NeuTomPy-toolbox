@@ -7,10 +7,10 @@ import tkinter
 __author__  = "Davide Micieli"
 __version__ = "0.1.0"
 __all__     = ['get_image_gui',
-			   'save_filename_gui',
-			   'get_folder_gui',
-			   'get_filename_gui',
-			   'get_screen_resolution']
+	       'save_filename_gui',
+		'get_folder_gui',
+		'get_filename_gui',
+		'get_screen_resolution']
 
 #logging.basicConfig(level=logging.WARNING)
 logs = logging.getLogger(__name__)
@@ -160,7 +160,7 @@ def get_filename_gui(initialdir='', message='Select file...', ext=None ):
 		else:
 			ext = ( ext, ("All files", "*.*") )
 			fname = filedialog.askopenfilename(initialdir=initialdir, title=message,
-			 								   filetypes = ext)
+			 				   filetypes = ext)
 
 		if(fname):
 			break
