@@ -1,4 +1,4 @@
-import numpy as np
+radiusimport numpy as np
 from numpy import sin, cos
 import matplotlib as mpl
 mpl.use('TkAgg')
@@ -551,7 +551,7 @@ def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=Tr
 	ref_proj: 2d array
 		The image shown to select the region of interest. Default is None, hence
 		proj_0 is shown.
-	
+
 	ystep: int, optional
 		The center of rotation position is computed every `ystep`. Default value
 		is 5.
@@ -747,10 +747,64 @@ def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=Tr
 	return middle_shift, theta
 
 
-def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None, theta=None, nroi=None, ystep=5):
+def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None,
+				theta=None, nroi=None, ystep=5):
 	"""
-	This function computes the
-	specificare che l'array deve essere uno stack di proiezioni e non uno stack di sinogrammi
+	This function corrects the misalignment of the rotation axis respect to the
+	vertical axis of the detector. The user can choose to insert manually the offset
+	and the tilt angle of the rotation axis	respect to the detector, if known
+	parameters, or to estimate them using the projections at 0 and at 180 degrees.
+	In this case, the user selects interactively different regions where the
+	sample is visible. Once the position of the rotation axis is found the
+	results are shown in two figures. In the first are shown the estimated rotation
+	axis and the image obtained as proj_0 - pro_180[:,::-1] (projection at 180
+	is flipped horizontally) before the correction.
+	The second figure shows the difference image (proj_0 - pro_180[:,::-1]) after
+	the correction and the histogram of abs(proj_0 - pro_180[:,::-1]).
+
+	Parameters
+	----------
+	norm_proj : ndarray
+		A stack of projections. The 0-axis represents theta.
+
+	proj_0 : 2d array
+		The projection at 0 degrees.
+
+	proj_180 : 2d array
+		The projection at 180 degrees.
+
+	show_opt : str, optional
+		A string defining the image to show for the selection of the ROIs.
+		Allowed values are:
+		`mean` -> shows the mean of `norm_proj` along the O-axis.
+		`std`  -> shows the standard deviation of `norm_proj` along the O-axis
+		`zero` -> shows proj_0
+		`pi`   -> shows proj_180
+		Default value is `mean`.
+
+	shift: int, optinal
+		The horizontal shift in pixel of the rotation axis respect to the
+		vertical axis of the detector. It can be specified if known parameter.
+		The default is None, hence this parameter is estimated from the projections.
+
+	theta: int, optinal
+		The tilt angle in degrees of the rotation axis respect to the vertical
+		axis of the detector. It can be specified if known parameter.
+		The default is None, hence this parameter is estimated from the projections.
+
+	nroi : int, optional
+		The number of the region of interest to select  for the computation
+		of the rotation axis position. Default is None, hence the value is read
+		as input from keyboard.
+
+	ystep: int, optional
+		The center of rotation position is computed every `ystep`. Default value
+		is 5.
+
+	Returns
+	-------
+	norm_proj : ndarray
+		The stack after the correction. The computation is done in place.
 	"""
 
 	# compute COR axis interactively, if shift and theta are not known
@@ -803,37 +857,103 @@ def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None, the
 	return norm_proj
 
 
-def median_filter(img, size):
-
-	simg = sitk.GetImageFromArray(img)
-	mf = sitk.MedianImageFilter()
-	mf.SetRadius(size)
-	fimg = sitk.GetArrayFromImage(mf.Execute(simg))
-
-	return fimg
-
-def convolution_2D (img, kernel, boundary='ZERO_PAD', out_mode='SAME'):
+def median_filter(img, radius):
 	"""
-	Perform a convolution with a custom kernel.
+	This function applies a median filter on an image.
 
 	Parameters
 	----------
 	img : 2d array
-		Set the variable type
+		The image to filter. It must be a two-dimensional array.
+
+	radius: int or tuple of int
+		The radius of the neighborhood. The radius is defined separately for
+		each dimension as the number of pixels that the neighborhood extends
+		outward from the center pixel.
+
+	Returns
+	-------
+		The filtered image.
+	"""
+	if (img.ndim != 2):
+		raise ValueError('The input iamge must be two-dimensional.')
+
+	simg = sitk.GetImageFromArray(img)
+	mf = sitk.MedianImageFilter()
+	mf.SetRadius(radius)
+	fimg = sitk.GetArrayFromImage(mf.Execute(simg))
+
+	return fimg
+
+def median_filter_stack(arr, radius, axis=0):
+	"""
+	This function applies a 2D median filter on a stack of images.
+
+	Parameters
+	----------
+	img : ndarray
+		The stack to filter. It must be a three-dimensional array.
+
+	radius: int or tuple of int
+		The radius of the neighborhood. The radius is defined separately for
+		each dimension as the number of pixels that the neighborhood extends
+		outward from the center pixel.
+
+	axis : int
+		The axis along which the 2D median filter is iterated.
+
+	Returns
+	-------
+	out : ndarray
+		The filtered stack of images.
+	"""
+	if (arr.ndim != 3):
+		raise ValueError('The input array must be three-dimensional.')
+
+	arr = arr.swapaxes(0, axis)
+
+	for i in tqdm(range(0, arr.shape[0]), unit=' images'):
+		arr[i] = median_filter(arr[i], radius)
+
+	arr = arr.swapaxes(0, axis)
+
+	return arr
+
+
+def convolution_2D (img, kernel, boundary='ZERO_PAD', out_mode='SAME'):
+	"""
+	Perform a 2D convolution with an arbitrary kernel.
+
+	Parameters
+	----------
+	img : 2d array
+		The input image.
 
 	kernel : 2d array
-		Set the variable array
+		The kernel to use for the convolution.
 
 	boundary: str
+		The boundary padding type. Allowed values are:
+		``ZERO_PAD``, ``ZERO_FLUX_NEUMANN_PAD`` and ``PERIODIC_PAD``.
 
 	out_mode: str
+		Sets the output region mode. If set to `SAME`, the output region
+		will be the same as the input region, and regions of the image
+		near the boundaries will contain contributions from outside the
+		input image as determined by the boundary condition set in
+		`boundary`. If set to `VALID`, the output region
+		consists of pixels computed only from pixels in the input image
+		(no extrapolated contributions from the boundary condition are
+		needed). The output is therefore smaller than the input
+		region. Default value is `SAME`.
 
 	Returns
 	-------
 	out : 2d array
-		The filtered image. The type of the array is inferred from img and kernel type.
-
+		The filtered image. The type of the array is inferred
+		from img and kernel type.
 	"""
+
 	simg    = sitk.GetImageFromArray(img)
 	skernel = sitk.GetImageFromArray(kernel)
 
@@ -845,16 +965,16 @@ def convolution_2D (img, kernel, boundary='ZERO_PAD', out_mode='SAME'):
 
 	return filt
 
-def std_map(img, size):
+def std_map(img, radius):
 
-	if (type(size) is not int or size==0):
-		raise ValueError('Kernel size must be a positive integer.')
+	if (type(radius) is not int or radius==0):
+		raise ValueError('Kernel radius must be a positive integer.')
 
 	vartype = img.dtype # get the array type
 	img     = img.astype(vartype)
 	img2    = img**2
 	ones    = np.ones(img.shape, dtype=vartype)
-	kernel = np.ones((2*size+1, 2*size+1),  dtype=vartype)
+	kernel = np.ones((2*radius+1, 2*radius+1),  dtype=vartype)
 
 	s  = convolution_2D(img, kernel)
 	s2 = convolution_2D(img2, kernel)
@@ -863,15 +983,53 @@ def std_map(img, size):
 	return np.sqrt((s2 - s**2 / ns) / (ns-1))
 
 
-def remove_outliers(img, size, threshold, outliers='bright', k=1.0, out=None):
+def remove_outliers(img, radius, threshold, outliers='bright', k=1.0, out=None):
+	"""
+	This function removes bright and dark outliers from an image.
+	It replaces a pixel by the median of the pixels in the neighborhood
+	if it deviates from the median by more than a certain value (k*threshold).
+	The threshold can be specified by the user as a global value or computed as
+	the local standard deviation map.
 
+	Parameters
+	----------
+	img : 2d array
+		The image to elaborate.
+
+	radius: int or tuple of int
+		The radius of the neighborhood. The radius is defined separately for
+		each dimension as the number of pixels that the neighborhood extends
+		outward from the center pixel.
+
+	threshold: float or str
+		If it is the string 'local' the local standard deviation map is taken
+		into account. Conversely, if it is a float number the threshold is global.
+
+	outliers: str, optional
+		A string defining the type of outliers to remove. Allowed values are
+		``bright`` and ``dark``. Default is `bright`.
+
+	k : float, optional
+		A pixel is replaced by the median of the pixels in the neighborhood
+		if it deviates from the median by more than k*threshold.
+		Default value is 1.0.
+
+	out: 2d array, optional
+		If same as img, then the computation is done in place. Default is None,
+		hence this behaviour is disabled.
+
+	Returns
+	-------
+	out : 2d array
+		The image obtained by removing the outliers.
+	"""
 	if not (threshold=='local' or type(threshold) in [float, int]):
 		raise ValueError('The threshold must be a float variable or the string `local`.')
 
 	if(threshold=='local'):
-		threshold = std_map(img, size)
+		threshold = std_map(img, radius)
 
-	median = median_filter(img, size)
+	median = median_filter(img, radius)
 
 	if(outliers=='bright'):
 		diff    = img - median
@@ -885,17 +1043,54 @@ def remove_outliers(img, size, threshold, outliers='bright', k=1.0, out=None):
 
 	out = ne.evaluate('where(diff>cut, median, img)', out=out)
 
-	# not_spot = np.logical_not(spot)
-
-	# new_img  = np.zeros(img.shape)
-	# new_img[not_spot]  = img[not_spot]
-	# new_img[spot] = median[spot]
-
 	return out
 
 
-def remove_outliers_stack(arr, size, threshold, axis=0, outliers='bright', k=1.0, out=None):
+def remove_outliers_stack(arr, radius, threshold, axis=0, outliers='bright', k=1.0, out=None):
+	"""
+	This function removes bright and dark outliers from a stack of images.
+	The algorithm elaborates 2d images and the filtering is iterated over all
+	images in the stack.
+	The function replaces a pixel by the median of the pixels in the 2d neighborhood
+	if it deviates from the median by more than a certain value (k*threshold).
+	The threshold can be specified by the user as a global value or computed as
+	the local standard deviation map.
 
+	Parameters
+	----------
+	img : ndarray
+		The stack to elaborate.
+
+	radius: int or tuple of int
+		The radius of the 2D neighborhood. The radius is defined separately for
+		each dimension as the number of pixels that the neighborhood extends
+		outward from the center pixel.
+
+	threshold: float or str
+		If it is the string 'local' the local standard deviation map is taken
+		into account. Conversely, if it is a float number the threshold is global.
+
+	axis : int
+		The axis along wich the outlier removal is iterated.
+
+	outliers: str, optional
+		A string defining the type of outliers to remove. Allowed values are
+		``bright`` and ``dark``. Default is `bright`.
+
+	k : float, optional
+		A pixel is replaced by the median of the pixels in the neighborhood
+		if it deviates from the median by more than k*threshold.
+		Default value is 1.0.
+
+	out: 2d array, optional
+		If same as arr, then the computation is done in place. Default is None,
+		hence this behaviour is disabled.
+
+	Returns
+	-------
+	out : ndarray
+		The array obtained by removing the outliers.
+	"""
 	arr = arr.swapaxes(0, axis)
 
 	if(out is None):
@@ -903,6 +1098,7 @@ def remove_outliers_stack(arr, size, threshold, axis=0, outliers='bright', k=1.0
 
 	print('> Removing ' + outliers + ' outliers...')
 	for i in tqdm(range(0, arr.shape[0]), unit=' images'):
-		remove_outliers(arr[i], size, threshold, outliers, k, out=out[i])
+		remove_outliers(arr[i], radius, threshold, outliers, k, out=out[i])
 
+	out = out.swapaxes(0, axis)
 	return out
