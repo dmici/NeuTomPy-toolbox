@@ -1,4 +1,4 @@
-radiusimport numpy as np
+import numpy as np
 from numpy import sin, cos
 import matplotlib as mpl
 mpl.use('TkAgg')
