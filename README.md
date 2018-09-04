@@ -10,4 +10,4 @@ workflow for their data.
 License
 =======
 
-The project is licensed under the `GPLv3 <https://github.com/neutompy/blob/master/LICENSE>`_ license.
+The project is licensed under the GPLv3 <https://github.com/neutompy/blob/master/LICENSE> license.
