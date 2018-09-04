@@ -7,6 +7,10 @@ the need of users and researchers to compare state-of-the-art reconstruction met
 workflow for their data.
 
 # Features
+* Readers and writers for TIFF and FITS images and stacks.
+* Data normalization with dose correction, correction of the rotation axis tilt, ring-filters, outlier removals 
+* A wide range of reconstruction algorithm powered by ASTRA toolbox: FBP, SIRT, SART, ART, CGLS, NN-FBP, MR-FBP
+* Image quality metrics
 
 # Installation
 
