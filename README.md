@@ -6,6 +6,11 @@ The NeuTomPy toolbox was conceived primarily for Neutron Tomography (NT) and dev
 the need of users and researchers to compare state-of-the-art reconstruction methods and choose the optimal data-processing 
 workflow for their data.
 
+# Features
+
+# Installation
+
+# Documentation
 
 License
 =======
