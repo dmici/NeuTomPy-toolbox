@@ -21,6 +21,10 @@ workflow for their data.
 This software was developed in collaboration with [IMAT](https://www.isis.stfc.ac.uk/Pages/IMAT.aspx) beamline of the pulsed neutron spallation source [ISIS](https://www.isis.stfc.ac.uk/Pages/home.aspx) (UK).
 
 
+# Contact
+If you want to contact us for any reasons, please send an email to: neutompy@gmail.com
+
+
 License
 =======
 
