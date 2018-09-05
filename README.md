@@ -16,6 +16,11 @@ workflow for their data.
 
 # Documentation
 
+
+# Credits
+This software was developed in collaboration with [IMAT](https://www.isis.stfc.ac.uk/Pages/IMAT.aspx) beamline of the pulsed neutron spallation source [ISIS](https://www.isis.stfc.ac.uk/Pages/home.aspx) (UK).
+
+
 License
 =======
 
