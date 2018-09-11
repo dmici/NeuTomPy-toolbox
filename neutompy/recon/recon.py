@@ -11,10 +11,9 @@ logs = logging.getLogger(__name__)
 __author__  = "Davide Micieli"
 __version__ = "0.1.0"
 __all__     = ['recon_slice',
-			   'recon_stack',
-			   'reconstruct',
-			   'get_astra_proj_matrix'
-			  ]
+	       'recon_stack',
+	       'reconstruct',
+	       'get_astra_proj_matrix']
 
 # register nn-fbp training and rec plugin
 astra.plugin.register(nnfbp.plugin_prepare)
