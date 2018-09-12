@@ -123,7 +123,7 @@ def read_tiff(fname, croi=None, froi=None):
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
 	froi : str
-		String defining the ImageJ ROI fine name or file path.
+		String defining the ImageJ ROI file name or file path.
 
 	Returns
 	-------
@@ -203,7 +203,7 @@ def read_fits(fname, croi=None, froi=None):
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
 	froi : str
-		String defining the ImageJ ROI fine name or file path.
+		String defining the ImageJ ROI filename or file path.
 
 	Returns
 	-------
@@ -288,7 +288,7 @@ def read_image(fname, croi=None, froi=None):
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
 	froi : str
-		String defining the ImageJ ROI fine name or file path.
+		String defining the ImageJ ROI filename or file path.
 
 	Returns
 	-------
@@ -354,7 +354,7 @@ def read_stack_from_list(flist, slices=[], croi=None, froi=None):
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
 	froi : str
-		String defining the ImageJ ROI fine name or file path.
+		String defining the ImageJ ROI filename or file path.
 
 	Returns
 	-------
@@ -403,7 +403,7 @@ def read_tiff_stack(fname, slices=[], croi=None, froi=None):
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
 	froi : str, optional
-		String defining the ImageJ ROI fine name or file path.
+		String defining the ImageJ ROI filename or file path.
 
 	Returns
 	-------
@@ -413,7 +413,8 @@ def read_tiff_stack(fname, slices=[], croi=None, froi=None):
 	"""
 
 	if(os.path.isdir(fname) or fname==''):
-		fname = get_filename_gui(initialdir=fname, message='Select a file of the image stack...', ext=('TIFF Images', '*.tif *.tiff') )
+		fname = get_filename_gui(initialdir=fname, message='Select a file of the image stack...',
+					ext=('TIFF Images', '*.tif *.tiff') )
 
 	# check if file exists
 	if not(os.path.isfile(fname)):
@@ -458,7 +459,7 @@ def read_fits_stack(fname, slices=[], croi=None, froi=None):
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
 	froi : str
-		String defining the ImageJ ROI fine name or file path.
+		String defining the ImageJ ROI filename or file path.
 
 	Returns
 	-------
@@ -514,7 +515,7 @@ def read_image_stack(fname, slices=[], croi=None, froi=None):
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
 	froi : str, optional
-		String defining the ImageJ ROI fine name or file path.
+		String defining the ImageJ ROI filename or file path.
 
 	Returns
 	-------
@@ -534,9 +535,41 @@ def read_image_stack(fname, slices=[], croi=None, froi=None):
 	return arr
 
 
-def read_dataset(proj_180=True):
+def read_dataset(proj_180=True, croi=None, froi=None):
+	"""
+	This function reads a dataset which contains dark-field, flat-field, projection
+	images and optionally the projection at 180 degree. The user selects the main folder
+	and the files from a dialog box. A two-dimensional region of interest of each
+	image can be read specifying the coordinates or an ImageJ .roi file.
 
+	Parameters
+	----------
+	proj_180 : bool, optional
+		If True the user must select the projection at 180 degree separately from
+		the stack of projections.
 
+	croi : tuple, optional
+		Tuple defining the ROI indexes for each axis. It must be follow this notation:
+		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
+
+	froi : str, optional
+		String defining the ImageJ ROI file name or file path.
+
+	Returns
+	-------
+	proj : 3d array
+		The array containing the stack of projections.
+
+	dark : 3d array
+		The array containing the stack of dark-field images.
+
+	flat : 3d array
+		The array containing the stack of flat-field images.
+
+	proj180 : 2d array
+		Only if proj_180 is True, the 2D array representing the projection at 180 degree
+		is returned separately.
+	"""
 	# select the folder that contains dark, flat, and projection images using the GUI
 	data_folder = get_folder_gui('', message = 'Select the main folder of the dataset...')
 
@@ -547,12 +580,12 @@ def read_dataset(proj_180=True):
 		proj_pi_fname =  get_image_gui(data_folder, message = 'Select raw projection at 180°...')
 
 	# load the dataset
-	proj = read_image_stack(proj_dir)
-	dark = read_image_stack(dark_dir)
-	flat = read_image_stack(flat_dir)
+	proj = read_image_stack(proj_dir, croi=croi, froi=froi)
+	dark = read_image_stack(dark_dir, croi=croi, froi=froi)
+	flat = read_image_stack(flat_dir, croi=croi, froi=froi)
 	if proj_180:
-		proj180 = read_image(proj_pi_fname)
-
+		print('> Reading projection at 180 degree:',proj_pi_fname)
+		proj180 = read_image(proj_pi_fname, croi=croi, froi=froi)
 
 	if proj_180:
 		return proj, dark, flat, proj180
@@ -567,13 +600,15 @@ def write_tiff(fname, img, overwrite=False):
 	Parameters
 	----------
 	fname : str
-		String defining the file name or file path of the image to save. If the extension is not specified, it is automatically appended to fname.
+		String defining the file name or file path of the image to save.
+		If the extension is not specified, it is automatically appended to fname.
 
 	img : ndarray
 		The array to save as image.
 
 	overwrite: bool
-		If ``True``, overwrites the output file if it exists. Raises an ``IOError`` if ``False`` and the output file exists. Default is ``False``.
+		If ``True``, overwrites the output file if it exists. Raises an
+		``IOError`` if ``False`` and the output file exists. Default is ``False``.
 	"""
 
 	# add extension .tif if not specified in fname
@@ -600,13 +635,15 @@ def write_fits(fname, img, overwrite=False):
 	Parameters
 	----------
 	fname : str
-		String defining the file name or file path of the image to save. If the extension is not specified, it is automatically appended to fname.
+		String defining the file name or file path of the image to save.
+		If the extension is not specified, it is automatically appended to fname.
 
 	img : ndarray
 		The array to save as image.
 
 	overwrite: bool
-		If ``True``, overwrites the output file if it exists. Raises an ``IOError`` if ``False`` and the output file exists. Default is ``False``.
+		If ``True``, overwrites the output file if it exists. Raises an ``IOError``
+		if ``False`` and the output file exists. Default is ``False``.
 	"""
 
 	# add extension .tif if not specified in fname
@@ -655,7 +692,8 @@ def write_tiff_stack(fname, data, axis=0, start=0, croi=None, digit=4, dtype=Non
 		Data type of the images to save.
 
 	overwrite: bool
-		If ``True``, overwrites the output file if it exists. Raises an ``IOError`` if ``False`` and the output file exists. Default is ``False``.
+		If ``True``, overwrites the output file if it exists. Raises an ``IOError``
+		if ``False`` and the output file exists. Default is ``False``.
 
 	"""
 	## check dimension data ==3
@@ -665,7 +703,8 @@ def write_tiff_stack(fname, data, axis=0, start=0, croi=None, digit=4, dtype=Non
 	folder = os.path.dirname(fname)
 
 	if folder == '':
-		raise ValueError('File path not valid. Please specify the file path giving at least one folder, e.g.: folder/file.tiff ')
+		raise ValueError('File path not valid. Please specify the file path giving at\
+				least one folder, e.g.: folder/file.tiff ')
 	else:
 		if not (os.path.isdir(folder)):
 			raise ValueError('Folder not exist. %s' %folder)
@@ -736,7 +775,8 @@ def write_fits_stack(fname, data, axis=0, start=0, croi=None, digit=4, dtype=Non
 		Data type of the images to save.
 
 	overwrite: bool
-		If ``True``, overwrites the output file if it exists. Raises an ``IOError`` if ``False`` and the output file exists. Default is ``False``.
+		If ``True``, overwrites the output file if it exists. Raises an ``IOError``
+		if ``False`` and the output file exists. Default is ``False``.
 
 	"""
 	## check dimension data ==3
@@ -746,7 +786,8 @@ def write_fits_stack(fname, data, axis=0, start=0, croi=None, digit=4, dtype=Non
 	folder = os.path.dirname(fname)
 
 	if folder == '':
-		raise ValueError('File path not valid. Please specify the file path giving at least one folder, e.g.: folder/file.fits ')
+		raise ValueError('File path not valid. Please specify the file path giving\
+					at least one folder, e.g.: folder/file.fits ')
 	else:
 		if not (os.path.isdir(folder)):
 			raise ValueError('Folder not exist. %s' %folder)
