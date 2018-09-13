@@ -33,9 +33,16 @@ norm =  ntp.log_transform(norm, out=norm)
 # define the array of the angle views in radians
 angles = np.linspace(0, last_angle, norm.shape[0], endpoint=False)
 
-# FBP reconstruction using GPU
+# FBP reconstruction with the hamming filter using GPU
 print('> Reconstruction...')
-rec    = ntp.reconstruct(norm, angles, 'FBP_CUDA', pixel_size=pixel_size)
+rec    = ntp.reconstruct(norm, angles, 'FBP_CUDA', parameters={"FilterType":"hamming"}, pixel_size=pixel_size)
+
+#    Implemented FilterType in ASTRA toolbox are:
+#	 ``ram-lak`` (default), ``shepp-logan``, ``cosine``, ``hamming``, ``hann``, ``none``, ``tukey``,
+#	 ``lanczos``, ``triangular``, ``gaussian``, ``barlett-hann``, ``blackman``, ``nuttall``,
+#	 ``blackman-harris``, ``blackman-nuttall``, ``flat-top``, ``kaiser``,
+#	 ``parzen``, ``projection``, ``sinogram``, ``rprojection``, ``rsinogram``.
+
 
 # select the directory and the prefix file name of the reconstructed images to save.
 recon_dir = ntp.save_filename_gui('', message = 'Select the folder and the prefix name for the reconstructed images...')
