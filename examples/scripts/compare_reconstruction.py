@@ -33,7 +33,7 @@ cgls = ntp.reconstruct(sino, angles, 'CGLS_CUDA', parameters={'iterations':10}, 
 
 # define a list of reconstructed images
 rec_list = [fbp, sirt, cgls]
-rec_name = ['$\mathbf{FBP}$', '$\mathbf{SIRT}$', '$\mathbf{CGLS}$']
+rec_name = ['FBP', 'SIRT', 'CGLS']
 
 # roi coordinate
 rmin = 0
@@ -57,7 +57,7 @@ nbins = 300
 nsubplot = len(rec_list)
 
 plt.rc('font', family='serif', serif='Times', size=12)
-plt.rc('text', usetex=True)
+plt.rc('text', usetex=False)
 plt.rc('xtick', labelsize=13)
 plt.rc('ytick', labelsize=13)
 plt.rc('axes', labelsize=13)
@@ -68,20 +68,20 @@ fig.subplots_adjust(hspace=0, wspace=0.5, top=0.8)
 gs=GridSpec(nsquare+1,nsquare*nsubplot) # 2 rows, 3 columns
 
 for i in range(0, nsubplot):
-	
-	ax1=fig.add_subplot(gs[0:nsquare,i*nsquare:(i+1)*nsquare]) 
+
+	ax1=fig.add_subplot(gs[0:nsquare,i*nsquare:(i+1)*nsquare])
 	# quality metrics evaluation
 	img = rec_list[i]
 	im = ax1.imshow(img[rmin:rmax, cmin:cmax], vmin=xmin, vmax=xmax, cmap='gray')
 	ssim  = ntp.SSIM(img, true)
 	nrmse = ntp.NRMSE(img, true)
 	cnr   = ntp.CNR(img, froi_signal='signal.roi', froi_background='background.roi')
-	
+
 	title = rec_name[i]
 	plt.title(title +  '\n SSIM = '+ "{:.2f}".format(ssim) + ', CNR = ' "{:.1f}".format(cnr) + ',\n NRMSE = '+ "{:.2f}".format(nrmse))
 	plt.xticks([])
 	plt.yticks([])
-	
+
 	ax2=fig.add_subplot(gs[nsquare,i*nsquare:(i+1)*nsquare]) # Second row, span all columns
 	# generate histogram
 	mask = ntp.get_circular_mask(img.shape[0], img.shape[1], radius=370, center=(img.shape[0]//2, img.shape[0]//2 -30))
@@ -92,6 +92,6 @@ for i in range(0, nsubplot):
 	plt.yticks([1e2, 1e3, 1e4], ['']*3)
 	if i == 0:
 		plt.yticks([1e2, 1e3, 1e4], ['$10^2$', '$10^3$', '$10^4$'])
-		
+
 
 plt.show()
