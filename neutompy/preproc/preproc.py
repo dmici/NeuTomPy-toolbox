@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import sin, cos
 import matplotlib as mpl
-mpl.use('TkAgg')
+mpl.use('TkAgg', warn=False)
 import matplotlib.pyplot as plt
 from skimage.transform import rotate
 from matplotlib.offsetbox import AnchoredText
