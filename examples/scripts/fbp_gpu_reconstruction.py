@@ -1,7 +1,7 @@
-"""
-This script performs a complete reconstruction workflow.
-The reconstruction algorithm used is the FBP performed on a GPU.
-"""
+# ---------------------------------------------------------------
+# This script performs a complete reconstruction workflow.
+# The reconstruction algorithm used is the FBP performed on a GPU.
+# ---------------------------------------------------------------
 
 import numpy as np
 import neutompy as ntp
@@ -39,8 +39,7 @@ rec    = ntp.reconstruct(norm, angles, 'FBP_CUDA', pixel_size=pixel_size)
 
 
 # select the directory and the prefix file name of the reconstructed images to save.
-recon_dir = mt.save_filename_gui('',
-                    message = 'Select the folder and the prefix name for the reconstructed images...')
+recon_dir = mt.save_filename_gui('', message = 'Select the folder and the prefix name for the reconstructed images...')
 
 print('> Writing reconstructed slices...')
 mt.write_tiff_stack(recon_dir, rec)
