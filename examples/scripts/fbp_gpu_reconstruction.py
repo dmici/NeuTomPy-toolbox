@@ -2,10 +2,8 @@
 # This script performs a complete reconstruction workflow.
 # The reconstruction algorithm used is the FBP performed on a GPU.
 # ---------------------------------------------------------------
-
 import numpy as np
 import neutompy as ntp
-
 
 # set pixel size in cm
 pixel_size  = 0.0029
@@ -32,14 +30,17 @@ norm = ntp.remove_outliers_stack(norm, 1, 0.08, outliers='bright', out=norm)
 # perform minus-log transform
 norm =  ntp.log_transform(norm, out=norm)
 
+# define the array of the angle views in radians
+angles = np.linspace(0, last_angle, norm.shape[0], endpoint=False)
+
 # FBP reconstruction using GPU
 print('> Reconstruction...')
-angles = np.linspace(0, last_angle, norm.shape[0], endpoint=False)
 rec    = ntp.reconstruct(norm, angles, 'FBP_CUDA', pixel_size=pixel_size)
 
 
 # select the directory and the prefix file name of the reconstructed images to save.
 recon_dir = mt.save_filename_gui('', message = 'Select the folder and the prefix name for the reconstructed images...')
 
+# write the reconstructed images to disk
 print('> Writing reconstructed slices...')
 mt.write_tiff_stack(recon_dir, rec)
