@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------
-# This script performs a FBP, SIRT and CGLS reconstruction of a
+# This script performs FBP, SIRT and CGLS reconstructions of a
 # phantom sample. The reconstructions are compared using several
 # image quality indexis.
 # -------------------------------------------------------------------
