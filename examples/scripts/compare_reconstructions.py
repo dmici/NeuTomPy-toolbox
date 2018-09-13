@@ -1,3 +1,9 @@
+# -------------------------------------------------------------------
+# This script performs a FBP, SIRT and CGLS reconstruction of a
+# phantom sample. The reconstructions are compared using several
+# image quality indexis.
+# -------------------------------------------------------------------
+
 import numpy as np
 import neutompy as ntp
 from matplotlib.gridspec import GridSpec
@@ -23,7 +29,8 @@ sino   = sino_hq[::skip_theta]
 angles = np.linspace(0, 2*np.pi, na, False)[::skip_theta]
 
 # ground truth reconstruction
-true = ntp.reconstruct(sino_hq, np.linspace(0, np.pi*2, sino_hq.shape[0], endpoint=False), 'SIRT_CUDA', {'iterations':200}, pixel_size=pixel_size)
+true = ntp.reconstruct(sino_hq, np.linspace(0, np.pi*2, sino_hq.shape[0], endpoint=False), 'SIRT_CUDA',
+						{'iterations':200}, pixel_size=pixel_size)
 # fbp reconstruction
 fbp  = ntp.reconstruct(sino, angles, 'FBP_CUDA', pixel_size=pixel_size)
 # sirt reconstruction
