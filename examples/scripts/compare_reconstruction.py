@@ -35,17 +35,17 @@ cgls = ntp.reconstruct(sino, angles, 'CGLS_CUDA', parameters={'iterations':10}, 
 rec_list = [fbp, sirt, cgls]
 rec_name = ['FBP', 'SIRT', 'CGLS']
 
-# roi coordinate
+# roi coordinates
 rmin = 0
 rmax = None
 cmin = 0
 cmax = 880
 
-# set the range of the histograms
+# set the x-axis range of the histograms
 xmin = 0.0
 xmax = 0.7
 
-# counts range of the histogram
+# counts range of the histograms
 ymin = 10
 ymax = 2e4
 
@@ -56,16 +56,16 @@ nbins = 300
 
 nsubplot = len(rec_list)
 
-plt.rc('font', family='serif', serif='Times', size=12)
+plt.rc('font', family='serif', serif='Times', size=11)
 plt.rc('text', usetex=False)
-plt.rc('xtick', labelsize=13)
-plt.rc('ytick', labelsize=13)
-plt.rc('axes', labelsize=13)
+plt.rc('xtick', labelsize=12)
+plt.rc('ytick', labelsize=12)
+plt.rc('axes', labelsize=12)
 
 
 fig = plt.figure(figsize=(nsquare*nsubplot,nsquare+1+0.5))
 fig.subplots_adjust(hspace=0, wspace=0.5, top=0.8)
-gs=GridSpec(nsquare+1,nsquare*nsubplot) # 2 rows, 3 columns
+gs = GridSpec(nsquare+1,nsquare*nsubplot) # 2 rows, 3 columns
 
 for i in range(0, nsubplot):
 
@@ -83,7 +83,7 @@ for i in range(0, nsubplot):
 	plt.yticks([])
 
 	ax2=fig.add_subplot(gs[nsquare,i*nsquare:(i+1)*nsquare]) # Second row, span all columns
-	# generate histogram
+	# generate histogram of the gray values inside a circular mask
 	mask = ntp.get_circular_mask(img.shape[0], img.shape[1], radius=370, center=(img.shape[0]//2, img.shape[0]//2 -30))
 	cc, edge = np.histogram(img[mask], bins=binning)
 	ax2.bar(edge[:-1]+width*0.5, cc, width, color='C3', edgecolor='C3', log=True)
