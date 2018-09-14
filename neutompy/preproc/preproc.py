@@ -11,6 +11,7 @@ from neutompy.image.image import get_rect_coordinates_from_roi
 from neutompy.misc.uitools import get_screen_resolution
 from tqdm import tqdm
 import sys
+from time import sleep
 
 __author__  = "Davide Micieli"
 __version__ = "0.1.0"
@@ -585,7 +586,7 @@ def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=Tr
 	print('> Finding the rotation axis position...')
 	# set ROI number
 	if not nroi:
-		print('It is necessary to select one or multiple regions where the sample is present.\nThen you must draw the different regions vertically starting	from top to bottom.')
+		print('To compute the rotation axis position it is necessary to select one or multiple regions where the sample is present .\nHence you must draw the different regions vertically starting	from top to bottom.')
 		while True:
 			nroi = input('> Insert the number of regions to select: ')
 			if(nroi.isdigit() and int(nroi)>0):
@@ -643,7 +644,7 @@ def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=Tr
 	middle_shift = (np.round(m*nz*0.5 + q)).astype(np.int32)//2
 
 
-	print("COR Found!")
+	print("Rotation axis Found!")
 	print("offset =", offset, "   tilt angle =", theta, "°"  )
 
 	p0_r = np.zeros(proj_0.shape, dtype=np.float32)
@@ -665,7 +666,7 @@ def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=Tr
 	anchored_text1 = AnchoredText(info_cor, loc=2)
 	ax1.add_artist(anchored_text1)
 
-	plt.title('$P_0 - P^{flipped}_{\pi}$')
+	plt.title('$P_0 - P^{flipped}_{\pi}$ before correction')
 	plt.colorbar(fraction=0.046, pad=0.04)
 
 
@@ -707,7 +708,7 @@ def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=Tr
 	mu = np.median(diff2)
 	s  = diff2.std()
 	plt.imshow(diff2 , cmap='gray', vmin=mu-s, vmax=mu+s)
-	plt.title('$P_0 - P^{flipped}_{\pi}$ with correction')
+	plt.title('$P_0 - P^{flipped}_{\pi}$ after correction')
 	plt.colorbar(fraction=0.046, pad=0.04)
 
 
@@ -822,7 +823,7 @@ def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None,
 		while condition:
 
 			shift, theta = find_COR(proj_0, proj_180, nroi=nroi, ref_proj=proj2show, ystep=ystep, ShowResults=True)
-			print('')
+			sleep(0.5)
 
 			while True:
 					ans = input('> COR found. Do you want to correct all projections?\
@@ -846,7 +847,7 @@ def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None,
 	# end if
 
 	# correct all projections
-	print('> Correcting center of rotation misalignment...')
+	print('> Correcting rotation axis misalignment...')
 	for s in tqdm(range(0, norm_proj.shape[0]), unit=' images'):
 		# norm_proj[s,:,:] = np.roll(rotate(norm_proj[s,:,:], theta, preserve_range=True, order=1, mode='edge'), shift, axis=1)
 		norm_proj[s,:,:] = np.roll(rotate_sitk(norm_proj[s,:,:], theta, interpolator=sitk.sitkLinear), shift, axis=1)
