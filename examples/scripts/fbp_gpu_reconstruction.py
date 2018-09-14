@@ -34,7 +34,6 @@ norm =  ntp.log_transform(norm, out=norm)
 angles = np.linspace(0, last_angle, norm.shape[0], endpoint=False)
 
 # FBP reconstruction with the hamming filter using GPU
-print('> Reconstruction...')
 rec    = ntp.reconstruct(norm, angles, 'FBP_CUDA', parameters={"FilterType":"hamming"}, pixel_size=pixel_size)
 
 #    Implemented FilterType in ASTRA toolbox are:
@@ -48,5 +47,4 @@ rec    = ntp.reconstruct(norm, angles, 'FBP_CUDA', parameters={"FilterType":"ham
 recon_dir = ntp.save_filename_gui('', message = 'Select the folder and the prefix name for the reconstructed images...')
 
 # write the reconstructed images to disk
-print('> Writing reconstructed slices...')
 ntp.write_tiff_stack(recon_dir, rec)

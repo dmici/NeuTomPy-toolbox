@@ -34,12 +34,10 @@ norm =  ntp.log_transform(norm, out=norm)
 angles = np.linspace(0, last_angle, norm.shape[0], endpoint=False)
 
 # FBP reconstruction using CPU
-print('> Reconstruction...')
 rec    = ntp.reconstruct(norm, angles, 'FBP', pixel_size=pixel_size)
 
 # select the directory and the prefix file name of the reconstructed images to save.
 recon_dir = ntp.save_filename_gui('', message = 'Select the folder and the prefix name for the reconstructed images...')
 
 # write the reconstructed images to disk
-print('> Writing reconstructed slices...')
 ntp.write_tiff_stack(recon_dir, rec)
