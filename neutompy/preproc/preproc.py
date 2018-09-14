@@ -250,24 +250,24 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 	--------
 	Normalize dataset selecting interactively the ROI to crop and the dose ROI.
 	>>> import neutompy as ntp
-	>>> norm =  ntp.norm_proj(proj, dark, flat, dose_draw=True, crop_draw=True)
+	>>> norm =  ntp.normalize_proj(proj, dark, flat, dose_draw=True, crop_draw=True)
 
 	Normalize dataset and the raw projection at 180 degree:
 	>>> fname  = ntp.get_image_gui('', message = 'Select raw projection at 180°...')
 	>>> img180 = ntp.read_image(fname)
-	>>> norm, norm_180 = ntp.norm_proj(proj, dark, flat, proj_180=img180)
+	>>> norm, norm_180 = ntp.normalize_proj(proj, dark, flat, proj_180=img180)
 
 	Normalize dataset using two ImageJ .roi file to define the ROI to crop and
 	the dose ROI:
-	>>> norm = ntp.norm_proj(proj, dark, flat, dose_file='./dose.roi', crop_file='./crop.roi'
+	>>> norm = ntp.normalize_proj(proj, dark, flat, dose_file='./dose.roi', crop_file='./crop.roi'
 							 dose_draw=False, crop_draw=False)
 
 	Normalize the dataset with the log-transform:
-	>>> norm = ntp.norm_proj(proj, dark, flat, log=True)
+	>>> norm = ntp.normalize_proj(proj, dark, flat, log=True)
 
 	Trivial data normalization using the whole field of view and without the
 	dose correction:
-	>>> norm = ntp.norm_proj(proj, dark, flat, dose_draw=False, crop_draw=False)
+	>>> norm = ntp.normalize_proj(proj, dark, flat, dose_draw=False, crop_draw=False)
 	"""
 	if(min_ratio<=0.0):
 		raise ValueError('The parameter min_ratio must be positive.')
@@ -284,7 +284,6 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 		if (proj_180.ndim !=2):
 			raise ValueError('Invalid array dimensions. The projection at 180 must be a 2D array.')
 		AddProj180 = True
-
 
 	if proj_180 is None:
 		AddProj180 = False
@@ -332,6 +331,7 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 
 		# draw the roi over the image
 		if (crop_draw):
+			print("> Crop a ROI of the projections to reconstruct...")
 			show_proj = func_show(proj, axis=0, dtype=np.float32)
 			rmin_c, rmax_c, cmin_c, cmax_c = draw_ROI(show_proj, 'Select the region to use for the reconstruction...' )
 
@@ -361,6 +361,7 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 		if (dose_draw):
 			if not crop_draw: # to prevent double computation of std
 				show_proj = func_show(proj, axis=0, dtype=np.float32)
+			print("> Background ROI selection. Select a region free of the sample...")
 			rmin_d, rmax_d, cmin_d, cmax_d  = draw_ROI(show_proj, 'Select a region free of the sample...' )
 
 		ds_roi = rmin_d, rmax_d, cmin_d, cmax_d
@@ -401,6 +402,8 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 	else:
 		ds_roi = None
 
+	if (proj_c.shape[0] != 1):
+		print('> Normalization...')
 	out = _normalize(proj_c, dark_c, flat_c, mode, min_denom,  out=out)
 
 	if(doseON):
@@ -826,8 +829,8 @@ def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None,
 			sleep(0.5)
 
 			while True:
-					ans = input('> COR found. Do you want to correct all projections?\
-					 \n[Y] Yes, correct them.  \n[N] No, find again the COR.\
+					ans = input('> Rotation axis found. Do you want to correct all projections?\
+					 \n[Y] Yes, correct them.  \n[N] No, find it again.\
 					 \n[C] Cancel and abort the script.\
 					 \nType your answer and press [Enter] :')
 					if(ans=='Y' or ans=='y'):
