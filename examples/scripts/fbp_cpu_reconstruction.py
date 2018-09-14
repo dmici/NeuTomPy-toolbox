@@ -34,6 +34,7 @@ norm =  ntp.log_transform(norm, out=norm)
 angles = np.linspace(0, last_angle, norm.shape[0], endpoint=False)
 
 # FBP reconstruction using CPU
+print('> Reconstruction...')
 rec    = ntp.reconstruct(norm, angles, 'FBP', pixel_size=pixel_size)
 
 # select the directory and the prefix file name of the reconstructed images to save.

@@ -34,6 +34,7 @@ norm =  ntp.log_transform(norm, out=norm)
 angles = np.linspace(0, last_angle, norm.shape[0], endpoint=False)
 
 # SIRT reconstruction with 100 iterations using GPU
+print('> Reconstruction...')
 rec    = ntp.reconstruct(norm, angles, 'SIRT_CUDA', parameters={"iterations":100}, pixel_size=pixel_size)
 
 # select the directory and the prefix file name of the reconstructed images to save.

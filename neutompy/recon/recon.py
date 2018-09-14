@@ -351,7 +351,6 @@ def reconstruct(tomo, angles, method, parameters=None, pixel_size=1.0, offset=0,
 		raise ValueError('Invalid shape of the array tomo. It must have 2 or 3 dimensions.')
 
 	nd = tomo.shape[-1]
-	print('> Reconstruction...')
 	pmat = get_astra_proj_matrix(nd, angles, method)
 
 	if(tomo.ndim==2):
