@@ -1,7 +1,5 @@
 import numpy as np
 from numpy import sin, cos
-import matplotlib as mpl
-mpl.use('TkAgg', warn=False)
 import matplotlib.pyplot as plt
 from skimage.transform import rotate
 from matplotlib.offsetbox import AnchoredText
@@ -824,6 +822,7 @@ def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None,
 		while condition:
 
 			shift, theta = find_COR(proj_0, proj_180, nroi=nroi, ref_proj=proj2show, ystep=ystep, ShowResults=True)
+			print('')
 
 			while True:
 					ans = input('> COR found. Do you want to correct all projections?\

@@ -1,7 +1,5 @@
 import numpy as np
 import numexpr as ne
-import matplotlib as mpl
-mpl.use('TkAgg', warn=False)  # or whatever other backend that you want
 import matplotlib.pyplot as plt
 from skimage.measure import profile_line, compare_ssim
 from numpy.linalg import norm
