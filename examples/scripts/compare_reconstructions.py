@@ -16,7 +16,7 @@ pixel_size = 0.0029
 skip_theta = 3
 
 # image filename
-fname = 'sinogram.tiff'
+fname = './data/sinogram.tiff'
 
 # read the sinogram
 sino_hq = ntp.read_image(fname)
@@ -82,7 +82,7 @@ for i in range(0, nsubplot):
 	im = ax1.imshow(img[rmin:rmax, cmin:cmax], vmin=xmin, vmax=xmax, cmap='gray')
 	ssim  = ntp.SSIM(img, true)
 	nrmse = ntp.NRMSE(img, true)
-	cnr   = ntp.CNR(img, froi_signal='signal.roi', froi_background='background.roi')
+	cnr   = ntp.CNR(img, froi_signal='./data/signal.roi', froi_background='./data/background.roi')
 
 	title = rec_name[i]
 	plt.title(title +  '\n SSIM = '+ "{:.2f}".format(ssim) + ', CNR = ' "{:.1f}".format(cnr) + ',\n NRMSE = '+ "{:.2f}".format(nrmse))
