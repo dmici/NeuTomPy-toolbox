@@ -586,7 +586,7 @@ def find_COR(proj_0, proj_180, nroi=None, ref_proj=None, ystep=5, ShowResults=Tr
 	print('> Finding the rotation axis position...')
 	# set ROI number
 	if not nroi:
-		print('To compute the rotation axis position it is necessary to select one or multiple regions where the sample is present .\nHence you must draw the different regions vertically starting	from top to bottom.')
+		print('To compute the rotation axis position it is necessary to select one or multiple regions where the sample is present.\nHence you must draw the different regions vertically starting from top to bottom.')
 		while True:
 			nroi = input('> Insert the number of regions to select: ')
 			if(nroi.isdigit() and int(nroi)>0):
