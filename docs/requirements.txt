@@ -5,7 +5,7 @@ tifffile
 opencv-python
 read-roi
 astra-toolbox
-skimage
+scikit-image
 scipy
 six
 PyWavelets
