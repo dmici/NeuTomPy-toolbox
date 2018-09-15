@@ -1,0 +1,13 @@
+numpy
+matplotlib
+astropy
+tifffile
+tkinter
+opencv-python
+read-roi
+astra-toolbox
+skimage
+scipy
+six
+PyWavelets
+tqdm
