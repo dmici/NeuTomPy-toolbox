@@ -4,9 +4,10 @@ astropy
 tifffile
 opencv-python
 read-roi
-astra-toolbox
-scikit-image
+cython
 scipy
 six
+scikit-image
+astra-toolbox
 PyWavelets
 tqdm
