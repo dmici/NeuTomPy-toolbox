@@ -1,7 +1,7 @@
 Welcome to NeuTomPy toolbox's documentation!
 ============================================
 
-.. image:: ../../img/logo_neutompy.png
+.. image:: ../../img/logo_neutompy_trasparente.png
    :width: 640px
    :alt: NeuTomPy-toolbox
    :align: center
@@ -25,7 +25,7 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 1
-   
+
    installation
    examples
    api
