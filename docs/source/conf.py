@@ -130,6 +130,8 @@ html_sidebars = {
 }
 
 
+html_logo = '../../img/logo_neutompy_trasparente.png'
+
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
