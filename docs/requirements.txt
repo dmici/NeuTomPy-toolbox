@@ -8,5 +8,6 @@ cython
 scipy
 six
 scikit-image
+SimpleITK
 PyWavelets
 tqdm
