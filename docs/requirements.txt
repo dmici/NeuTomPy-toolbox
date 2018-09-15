@@ -8,6 +8,5 @@ cython
 scipy
 six
 scikit-image
-astra-toolbox
 PyWavelets
 tqdm
