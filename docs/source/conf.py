@@ -130,7 +130,7 @@ html_sidebars = {
 }
 
 
-html_logo = '../../img/logo_neutompy_trasparente.png'
+html_logo = '../../img/logo_neutompy.png'
 
 # -- Options for HTMLHelp output ------------------------------------------
 
