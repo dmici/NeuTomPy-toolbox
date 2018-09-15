@@ -29,9 +29,9 @@ def get_circular_mask(nrow, ncol, radius=None, center=None):
 
 	Returns
 	-------
-		mask : 2d array
-		A boolean array that represents the circular mask.
-		The values outside the circle are `False`, while the inner values are `True`.
+	mask : 2d array
+		A boolean array that represents the circular mask. The values outside the circle
+		are `False`, while the inner values are `True`.
 	"""
 
 

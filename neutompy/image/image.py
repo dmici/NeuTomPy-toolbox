@@ -118,11 +118,11 @@ def read_tiff(fname, croi=None, froi=None):
 	fname : str
 		String defining the file name or the file path
 
-	croi : tuple
+	croi : tuple, optional
 		Tuple defining the indexes range for each axis. It must be follow this notation:
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
-	froi : str
+	froi : str, optional
 		String defining the ImageJ ROI file name or file path.
 
 	Returns
@@ -198,11 +198,11 @@ def read_fits(fname, croi=None, froi=None):
 	fname : str
 		String defining the file name or the file path
 
-	croi : tuple
+	croi : tuple, optional
 		Tuple defining the indexes range for each axis. It must be follow this notation:
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
-	froi : str
+	froi : str, optional
 		String defining the ImageJ ROI filename or file path.
 
 	Returns
@@ -283,11 +283,11 @@ def read_image(fname, croi=None, froi=None):
 	fname : str
 		String defining the file name or the file path
 
-	croi : tuple
+	croi : tuple, optional
 		Tuple defining the indexes range for each axis. It must be follow this notation:
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
-	froi : str
+	froi : str, optional
 		String defining the ImageJ ROI filename or file path.
 
 	Returns
@@ -346,14 +346,14 @@ def read_stack_from_list(flist, slices=[], croi=None, froi=None):
 	flist : list of str
 		List of the file names or file paths to read in the defined order. File with unknown image extension are skipped automatically.
 
-	slices : list of int
+	slices : list of int, optional
 		List of the indexes of flist to read. If it is [] then all image files are read.
 
-	croi : tuple
+	croi : tuple, optional
 		Tuple defining the indexes range for each axis. It must be follow this notation:
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
-	froi : str
+	froi : str, optional
 		String defining the ImageJ ROI filename or file path.
 
 	Returns
@@ -451,14 +451,14 @@ def read_fits_stack(fname, slices=[], croi=None, froi=None):
 	fname :  str
 		One of the file names of the fits stack. File with unknown image extension are skipped automatically. If fname is '' or a folder path, then a dialog box is opened to select one of the file of the stack to read. The initial directory is C:\ (in windows) or / (in UNIX) if fname=='', otherwise is the folder path assigned to fname.
 
-	slices : list of int
+	slices : list of int, optional
 		List of the element indexes to read. If it is [] then all fits image files are read.
 
-	croi : tuple
+	croi : tuple, optional
 		Tuple defining the indexes range for each axis. It must be follow this notation:
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
-	froi : str
+	froi : str, optional
 		String defining the ImageJ ROI filename or file path.
 
 	Returns
@@ -606,7 +606,7 @@ def write_tiff(fname, img, overwrite=False):
 	img : ndarray
 		The array to save as image.
 
-	overwrite: bool
+	overwrite: bool, optional
 		If ``True``, overwrites the output file if it exists. Raises an
 		``IOError`` if ``False`` and the output file exists. Default is ``False``.
 	"""
@@ -641,7 +641,7 @@ def write_fits(fname, img, overwrite=False):
 	img : ndarray
 		The array to save as image.
 
-	overwrite: bool
+	overwrite: bool, optional
 		If ``True``, overwrites the output file if it exists. Raises an ``IOError``
 		if ``False`` and the output file exists. Default is ``False``.
 	"""
@@ -675,23 +675,23 @@ def write_tiff_stack(fname, data, axis=0, start=0, croi=None, digit=4, dtype=Non
 	data : ndarray
 		The 3D stack to write.
 
-	axis : int
+	axis : int, optional
 		The axis along which the stacking is performed.
 
-	start : int
+	start : int, optional
 		Index used for saving the first image.
 
-	croi : tuple
+	croi : tuple, optional
 		Tuple defining the indexes range for each axis. It must be follow this notation:
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
-	digit : int
+	digit : int, optional
 		Number of digits used for the numbering of the images.
 
-	dtype : dtype
+	dtype : dtype, optional
 		Data type of the images to save.
 
-	overwrite: bool
+	overwrite: bool, optional
 		If ``True``, overwrites the output file if it exists. Raises an ``IOError``
 		if ``False`` and the output file exists. Default is ``False``.
 
@@ -758,23 +758,23 @@ def write_fits_stack(fname, data, axis=0, start=0, croi=None, digit=4, dtype=Non
 	data : ndarray
 		The 3D stack to write.
 
-	axis : int
+	axis : int, optional
 		The axis along which the stacking is performed.
 
-	start : int
+	start : int, optional
 		Index used for saving the first image.
 
-	croi : tuple
+	croi : tuple, optional
 		Tuple defining the indexes range for each axis. It must be follow this notation:
 		( (row_start, row_end, row_step),  (col_start, col_end, col_step) )
 
-	digit : int
+	digit : int, optional
 		Number of digits used for the numbering of the images.
 
-	dtype : dtype
+	dtype : dtype, optional
 		Data type of the images to save.
 
-	overwrite: bool
+	overwrite: bool, optional
 		If ``True``, overwrites the output file if it exists. Raises an ``IOError``
 		if ``False`` and the output file exists. Default is ``False``.
 

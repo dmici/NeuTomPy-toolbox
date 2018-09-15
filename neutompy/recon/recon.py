@@ -40,6 +40,7 @@ def get_astra_proj_matrix(nd, angles, method):
 
 	method : string
 		A string defining the name of the reconstruction algorithm.
+
 		Available CPU-based methods are:
 			``BP``, ``FBP``, ``SIRT``, ``SART``, ``ART``, ``CGLS``, ``NN-FBP``,
 			``NN-FBP-train``, ``MR-FBP``
@@ -82,6 +83,7 @@ def recon_slice(sinogram, method, pmat, parameters=None, pixel_size=1.0, offset=
 
 	method : str
 		A string defining the name of the reconstruction algorithm.
+
 		Available CPU-based methods are:
 			``BP``, ``FBP``, ``SIRT``, ``SART``, ``ART``, ``CGLS``, ``NN-FBP``,
 			``NN-FBP-train``, ``MR-FBP``
@@ -130,7 +132,7 @@ def recon_slice(sinogram, method, pmat, parameters=None, pixel_size=1.0, offset=
 	 ``blackman-harris``, ``blackman-nuttall``, ``flat-top``, ``kaiser``,
 	 ``parzen``, ``projection``, ``sinogram``, ``rprojection``, ``rsinogram``.
 
-	GPU-based FBP reconstruction with 100 iterations and limiting the pixel values
+	GPU-based SIRT reconstruction with 100 iterations and limiting the pixel values
 	in the range [0,2]:
 
 	>>> rec =  ntp.recon_slice(sinogram, "SIRT_CUDA", p,
@@ -185,6 +187,7 @@ def recon_stack(proj, method, pmat, parameters=None, pixel_size=1.0, offset=0, s
 
 	method : str
 		A string defining the name of the reconstruction algorithm.
+
 		Available CPU-based methods are:
 			``BP``, ``FBP``, ``SIRT``, ``SART``, ``ART``, ``CGLS``, ``NN-FBP``,
 			``NN-FBP-train``, ``MR-FBP``
@@ -222,7 +225,7 @@ def recon_stack(proj, method, pmat, parameters=None, pixel_size=1.0, offset=0, s
 
 	Examples
 	--------
-	GPU-based FBP reconstruction with a hamming filter:
+	GPU-based FBP reconstruction with the Hamming filter:
 
 	>>> import neutomopy as ntp
 	>>> # read stack of sinograms
@@ -240,7 +243,7 @@ def recon_stack(proj, method, pmat, parameters=None, pixel_size=1.0, offset=0, s
 	 ``blackman-harris``, ``blackman-nuttall``, ``flat-top``, ``kaiser``,
 	 ``parzen``, ``projection``, ``sinogram``, ``rprojection``, ``rsinogram``.
 
-	GPU-based FBP reconstruction with 100 iterations and limiting the values of
+	GPU-based SIRT reconstruction with 100 iterations and limiting the values of
 	the reconstructed pixel in the range [0,2]:
 
 	>>> rec =  ntp.recon_stack(data, "SIRT_CUDA", p, sinogram_order=True,
@@ -274,41 +277,43 @@ def reconstruct(tomo, angles, method, parameters=None, pixel_size=1.0, offset=0,
 	This function reconstructs a dataset of normalized projections or a sinogram
 	for a 2D parallel beam geaometry.
 
-	Paramenters
+	Parameters
 	-----------
 	tomo : 2d or 3d array
 		It can be a single sinogram, a three-dimensional stack of projections
 		or a three-dimensional stack of sinograms.
-
+	
 	angles : 1d array, float
 		The array containing the view angles in radians.
 		For example, for a uniformly spaced scan from 0 to 360 degree with a number
 		of projections nangles:
 		angles = np.linspace(0, 2*np.pi, nangles, endpoint=False)
-
+	
 	method : str
 		A string defining the name of the reconstruction algorithm.
+		
 		Available CPU-based methods are:
 			``BP``, ``FBP``, ``SIRT``, ``SART``, ``ART``, ``CGLS``, ``NN-FBP``,
 			``NN-FBP-train``, ``MR-FBP``
+		
 		Available GPU-based methods are:
 			``BP_CUDA``, ``FBP_CUDA``, ``SIRT_CUDA``, ``SART_CUDA``, ``CGLS_CUDA``
-
+	
 	parameters: dict, optional
 		Specific options of the reconstruction algorithm defined in `method`.
 		The complete list of the available options can be found within the ASTRA toolbox
 		documentation: https://www.astra-toolbox.com/docs/algs/index.html.
-
+	
 	pixel_size : float, optional
 		The detector pixel size. If specified in cm the attenuation coefficient
 		values are returned in cm^-1. Default value is 1.0.
-
+	
 	offset : int, optional
 		The offset of the rotation axis with respect to the vertical axis of the detector.
 		If offset is positive the rotation axis is at right-side of the detector
 		vertical axis. If negative, is at left-side.
 		Default value is 0.
-
+	
 	sinogram_order : bool, optional
 		If ``True`` the input array is read as a stack of sinograms (0 axis
 		represents the projections y-axis). If ``False`` the input array is read
@@ -317,13 +322,13 @@ def reconstruct(tomo, angles, method, parameters=None, pixel_size=1.0, offset=0,
 
 	Returns
 	-------
-	rec : 2d or 3d array
+	rec : 2d, 3d array
 		The reconstructed volume if `tomo` is three-dimensional. The reconstructed
 		slice if tomo is a single sinogram.
 
 	Examples
 	--------
-	GPU-based FBP reconstruction with a hamming filter:
+	GPU-based FBP reconstruction with the Hamming filter:
 
 	>>> import neutomopy as ntp
 	>>> # read stack of sinograms
@@ -340,12 +345,11 @@ def reconstruct(tomo, angles, method, parameters=None, pixel_size=1.0, offset=0,
 	 ``blackman-harris``, ``blackman-nuttall``, ``flat-top``, ``kaiser``,
 	 ``parzen``, ``projection``, ``sinogram``, ``rprojection``, ``rsinogram``.
 
-	GPU-based FBP reconstruction with 100 iterations and limiting the values of
+	GPU-based SIRT reconstruction with 100 iterations and limiting the values of
 	the reconstructed pixel in the range [0,2]:
 
 	>>> rec =  ntp.reconstruct(data, angles, "SIRT_CUDA", sinogram_order=True,
 	parameters={"iterations":100, "MinConstraint": 0.0, "MaxConstraint" = 2.0 })
-
 	"""
 	if(tomo.ndim !=2 and tomo.ndim != 3 ):
 		raise ValueError('Invalid shape of the array tomo. It must have 2 or 3 dimensions.')

@@ -249,24 +249,29 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 	Examples
 	--------
 	Normalize dataset selecting interactively the ROI to crop and the dose ROI.
+
 	>>> import neutompy as ntp
 	>>> norm =  ntp.normalize_proj(proj, dark, flat, dose_draw=True, crop_draw=True)
 
 	Normalize dataset and the raw projection at 180 degree:
+
 	>>> fname  = ntp.get_image_gui('', message = 'Select raw projection at 180°...')
 	>>> img180 = ntp.read_image(fname)
 	>>> norm, norm_180 = ntp.normalize_proj(proj, dark, flat, proj_180=img180)
 
 	Normalize dataset using two ImageJ .roi file to define the ROI to crop and
 	the dose ROI:
+
 	>>> norm = ntp.normalize_proj(proj, dark, flat, dose_file='./dose.roi', crop_file='./crop.roi'
 							 dose_draw=False, crop_draw=False)
 
 	Normalize the dataset with the log-transform:
+
 	>>> norm = ntp.normalize_proj(proj, dark, flat, log=True)
 
 	Trivial data normalization using the whole field of view and without the
 	dose correction:
+
 	>>> norm = ntp.normalize_proj(proj, dark, flat, dose_draw=False, crop_draw=False)
 	"""
 	if(min_ratio<=0.0):
@@ -450,18 +455,17 @@ def log_transform(norm_proj, out=None):
 	array must be the normalized dataset after flat-fielding correction.
 
 	Parameters
-    ----------
-    norm_proj : ndarray
-        3D stack of projections.
+	----------
+	norm_proj : ndarray
+		3D stack of projections.
 
-    out : ndarray, optional
-        Output array. If same as norm_proj, computation will be done in-place.
+	out : ndarray, optional
+		Output array. If same as norm_proj, computation will be done in-place.
 
-    Returns
-    -------
-    out : ndarray
-        Minus-log of the input array.
-
+	Returns
+	-------
+	out : ndarray
+		Minus-log of the input array.
 	"""
 
 	out = ne.evaluate('-log(norm_proj)', out=out)
@@ -775,12 +779,18 @@ def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None,
 
 	show_opt : str, optional
 		A string defining the image to show for the selection of the ROIs.
+
 		Allowed values are:
-		`mean` -> shows the mean of `norm_proj` along the O-axis.
-		`std`  -> shows the standard deviation of `norm_proj` along the O-axis
-		`zero` -> shows proj_0
-		`pi`   -> shows proj_180
-		Default value is `mean`.
+
+		``mean`` -> shows the mean of `norm_proj` along the O-axis.
+
+		``std``  -> shows the standard deviation of `norm_proj` along the O-axis
+
+		``zero`` -> shows proj_0
+
+		``pi``   -> shows proj_180
+		
+		Default value is ``mean``.
 
 	shift: int, optinal
 		The horizontal shift in pixel of the rotation axis respect to the
