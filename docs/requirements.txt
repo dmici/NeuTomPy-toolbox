@@ -2,7 +2,6 @@ numpy
 matplotlib
 astropy
 tifffile
-tkinter
 opencv-python
 read-roi
 astra-toolbox
