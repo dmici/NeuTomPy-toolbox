@@ -202,5 +202,5 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
         return MagicMock()
 
-MOCK_MODULES = ['astra', 'mkl_fft', 'pywt']
+MOCK_MODULES = ['astra', 'mkl_fft', 'pywt', 'numexpr']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
