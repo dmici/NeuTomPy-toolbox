@@ -12,7 +12,7 @@ import os
 logs = logging.getLogger(__name__)
 
 __author__  = "Davide Micieli"
-__version__ = "0.1.0"
+__version__ = '1.0.0'
 __all__     = ['CNR', 'NRMSE', 'SSIM', 'FWHM', 'get_line_profile']
 
 
@@ -97,10 +97,10 @@ def get_line_profile(image, start=(), end=(), froi='', ShowPlot=True, PlotTitle=
     end : 2-tuple of numeric scalar (float or int) (x y) [i.e. (col row)]
         The end point of the scan line. The destination point is *included*
         in the profile, in constrast to standard numpy indexing.
-    
+
     froi : string
         Path of the imagej file containing the line selection.
-        
+
     ShowPlot : bool
         If True a canvas is created representing the Plot Profile.
 
@@ -302,29 +302,29 @@ def SSIM(img1, img2, circ_crop=True, L=None, K1=0.01, K2 = 0.03, sigma=1.5, loca
 	----------
 	img1: 2d array
 		The first image to compare. SSIM index satisfies the condition of simmetry: SSIM(img1, img2) = SSIM(img2, img1)
-		
+
 	img2: 2d array
 		The second image to compare. SSIM index satisfies the condition of simmetry: SSIM(img1, img2) = SSIM(img2, img1)
-		
+
 	circular_crop : bool, optional
 		If True (default) the images are cropped with a circular mask,
 		otherwise the SSIM is computed over the entire image.
-		
+
 	L : float, optional
 		The data range of the input images (distance between minimum and
 		maximum possible values). By default, this is estimated from
 		the image data-type.
-		
+
 	K1 : float, optional
 		A constant that prevents the division by zero (see [1]_).
-		
+
 	K2 : float, optional
 		A constant that prevents the division by zero (see [1]_).
-		
+
 	sigma : float, optional
 		The standard deviation of the Gaussian filter. This parameter
 		sets the minimum scale at which the quality is evaluated.
-		
+
 	local_ssim: float, optional
 		If True, the function returns the local SSIM map.
 
@@ -332,7 +332,7 @@ def SSIM(img1, img2, circ_crop=True, L=None, K1=0.01, K2 = 0.03, sigma=1.5, loca
 	-------
 	ssim : float
 		The global SSIM index.
-		
+
 	map : 2d array
 		The bidimendional map of the local SSIM index. This is only returned
 		if `local_ssim` is set to True.

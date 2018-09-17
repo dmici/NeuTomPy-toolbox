@@ -14,7 +14,7 @@ import sys
 from time import sleep
 
 __author__  = "Davide Micieli"
-__version__ = "0.1.0"
+__version__ = '1.0.0'
 __all__     = ['draw_ROI',
 			   'normalize_proj',
 			   'log_transform',
@@ -789,7 +789,7 @@ def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None,
 		``zero`` -> shows proj_0
 
 		``pi``   -> shows proj_180
-		
+
 		Default value is ``mean``.
 
 	shift: int, optinal
