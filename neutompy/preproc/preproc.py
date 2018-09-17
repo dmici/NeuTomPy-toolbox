@@ -1219,7 +1219,7 @@ def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
 	References
 	----------
 	.. [1] B. Munch, P. Trtik, F. Marone, M. Stampanoni, Stripe and ring artifact removal with
-	combined wavelet-Fourier filtering, Optics Express 17(10):8567-8591, 2009.
+		   combined wavelet-Fourier filtering, Optics Express 17(10):8567-8591, 2009.
 	"""
 
 	if(arr.ndim != 3):
