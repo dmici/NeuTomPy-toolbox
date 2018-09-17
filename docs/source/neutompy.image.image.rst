@@ -1,5 +1,5 @@
-neutompy\.image\.image module
-=============================
+neutompy\.image\.image
+======================
 
 .. automodule:: neutompy.image.image
     :members:

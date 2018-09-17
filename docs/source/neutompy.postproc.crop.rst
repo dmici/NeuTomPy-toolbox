@@ -1,5 +1,5 @@
-neutompy\.postproc\.crop module
-===============================
+neutompy\.postproc\.crop
+========================
 
 .. automodule:: neutompy.postproc.crop
     :members:

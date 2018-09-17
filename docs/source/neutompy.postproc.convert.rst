@@ -1,5 +1,5 @@
-neutompy\.postproc\.convert module
-==================================
+neutompy\.postproc\.convert
+===========================
 
 .. automodule:: neutompy.postproc.convert
     :members:

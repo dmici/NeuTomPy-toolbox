@@ -1,5 +1,5 @@
-neutompy\.recon\.nnfbp\.TrainingData module
-===========================================
+neutompy\.recon\.nnfbp\.TrainingData
+====================================
 
 .. automodule:: neutompy.recon.nnfbp.TrainingData
     :members:

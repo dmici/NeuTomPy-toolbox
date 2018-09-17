@@ -1,5 +1,5 @@
-neutompy\.misc\.uitools module
-==============================
+neutompy\.misc\.uitools
+=======================
 
 .. automodule:: neutompy.misc.uitools
     :members:

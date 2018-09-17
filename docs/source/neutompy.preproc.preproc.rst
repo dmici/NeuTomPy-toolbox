@@ -1,5 +1,5 @@
-neutompy\.preproc\.preproc module
-=================================
+neutompy\.preproc\.preproc
+==========================
 
 .. automodule:: neutompy.preproc.preproc
     :members:

@@ -1,5 +1,5 @@
-neutompy\.recon\.recon module
-=============================
+neutompy\.recon\.recon
+======================
 
 .. automodule:: neutompy.recon.recon
     :members:

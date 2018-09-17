@@ -1,5 +1,5 @@
-neutompy\.recon\.optomo module
-==============================
+neutompy\.recon\.optomo
+=======================
 
 .. automodule:: neutompy.recon.optomo
     :members:

@@ -1,5 +1,5 @@
-neutompy\.recon\.nnfbp\.astra\_plugin module
-============================================
+neutompy\.recon\.nnfbp\.astra\_plugin
+=====================================
 
 .. automodule:: neutompy.recon.nnfbp.astra_plugin
     :members:

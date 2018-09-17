@@ -1,5 +1,5 @@
-neutompy\.metrics\.metrics module
-=================================
+neutompy\.metrics\.metrics
+==========================
 
 .. automodule:: neutompy.metrics.metrics
     :members:
