@@ -1120,7 +1120,35 @@ def remove_outliers_stack(arr, radius, threshold, axis=0, outliers='bright', k=1
 	return out
 
 
-def remove_stripe(img, level, wname, sigma):
+def remove_stripe(img, level, wname='db5', sigma=1.5):
+	"""
+	Suppress horizontal stripe in a sinogram using the Fourier-Wavelet based
+	method by Munch et al. [1]_.
+
+	Parameters
+	----------
+	img : 2d array
+		The two-dimensional array representig the image or the sinogram to de-stripe.
+
+	level : int
+		The highest decomposition level.
+
+	wname : str, optional
+		The wavelet type. Default value is ``db5``
+
+	sigma : float, optional
+		The damping factor in the Fourier space. Default value is ``1.5``
+
+	Returns
+	-------
+	out : 2d array
+		The resulting filtered image.
+
+	References
+	----------
+	.. [1] B. Munch, P. Trtik, F. Marone, M. Stampanoni, Stripe and ring artifact removal with
+	combined wavelet-Fourier filtering, Optics Express 17(10):8567-8591, 2009.
+	"""
 
 	# wavelet decomposition.
 	cH = []; cV = []; cD = []
@@ -1152,7 +1180,47 @@ def remove_stripe(img, level, wname, sigma):
 
 	return img
 
-def remove_stripe_stack(arr, level, wname, sigma, axis=1, out=None):
+
+def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
+	"""
+	Suppress horizontal stripe in a stack of sinograms or a stack of projections
+	using the Fourier-Wavelet based method by Munch et al. [1]_.
+
+	Parameters
+	----------
+	arr : 3d array
+		The tomographic data. It can be a stack of projections (theta is the 0-axis)
+		or a stack of images (theta is the 1-axis).
+
+	level : int
+		The highest decomposition level
+
+	wname : str, optional
+		The wavelet type. Default value is ``db5``
+
+	sigma : float, optional
+		The damping factor in the Fourier space. Default value is ``1.5``
+
+	axis : int, optional
+		The axis index of the theta axis.
+		Default value is ``1``.
+
+	out : None or ndarray, optional
+		The output array returned by the function. If it is the same as `arr`,
+		the computation will be done in place.
+		Default value is None, hence a new array is allocated and returned by
+		the function.
+
+	Returns
+	-------
+	outarr : 3d array
+		The resulting filtered dataset.
+
+	References
+	----------
+	.. [1] B. Munch, P. Trtik, F. Marone, M. Stampanoni, Stripe and ring artifact removal with
+	combined wavelet-Fourier filtering, Optics Express 17(10):8567-8591, 2009.
+	"""
 
 	if(arr.ndim != 3):
 		raise ValueError('Input array must be three-dimensional')
@@ -1165,7 +1233,7 @@ def remove_stripe_stack(arr, level, wname, sigma, axis=1, out=None):
 
 	arr     = arr.swapaxes(0, axis)
 	out_arr = out_arr.swapaxes(0,axis)
-	
+
 	for i in tqdm(range(0, arr.shape[0]), unit='images'):
 		out_arr[i] = remove_stripe(arr[i], level, wname, sigma)
 
