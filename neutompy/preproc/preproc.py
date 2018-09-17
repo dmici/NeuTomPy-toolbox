@@ -1154,7 +1154,7 @@ def remove_stripe(img, level, wname, sigma):
 
 def remove_stripe_stack(arr, level, wname, sigma, axis=1):
 
-	if(arr.shape != 3):
+	if(arr.ndim != 3):
 		raise ValueError('Input array must be three-dimensional')
 
 	arr = arr.swapaxes(0, axis)
