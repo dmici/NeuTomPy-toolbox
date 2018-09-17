@@ -2,9 +2,11 @@
 Examples
 ========
 
-This section shows some examples.
+This section includes some example scripts.
 
 
-.. literalinclude:: ../../examples/scripts/fbp_gpu_reconstruction.py
-  :language: python
-  :linenos:
+.. toctree::
+  examples.fbp_gpu
+  examples.fbp_cpu
+  examples.sirt_gpu
+  examples.compare
