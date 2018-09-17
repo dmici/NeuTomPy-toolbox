@@ -1152,16 +1152,24 @@ def remove_stripe(img, level, wname, sigma):
 
 	return img
 
-def remove_stripe_stack(arr, level, wname, sigma, axis=1):
+def remove_stripe_stack(arr, level, wname, sigma, axis=1, out=None):
 
 	if(arr.ndim != 3):
 		raise ValueError('Input array must be three-dimensional')
 
-	arr = arr.swapaxes(0, axis)
+	if(out is None):
+		out_arr = np.zeros(arr.shape, dtype=arr.dtype)
 
+	if isinstance(out, np.ndarray):
+		out_arr = out
+
+	arr     = arr.swapaxes(0, axis)
+	out_arr = out_arr.swapaxes(0,axis)
+	
 	for i in tqdm(range(0, arr.shape[0]), unit='images'):
-		arr[i] = remove_stripe(arr[i], level, wname, sigma)
+		out_arr[i] = remove_stripe(arr[i], level, wname, sigma)
 
-	arr = arr.swapaxes(0, axis)
 
-	return arr
+	out_arr = out_arr.swapaxes(0,axis)
+
+	return out_arr
