@@ -1184,7 +1184,7 @@ def remove_stripe(img, level, wname='db5', sigma=1.5):
 def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
 	"""
 	Suppress horizontal stripe in a stack of sinograms or a stack of projections
-	using the Fourier-Wavelet based method by Munch et al. [1]_.
+	using the Fourier-Wavelet based method by Munch et al. [1]_ .
 
 	Parameters
 	----------
