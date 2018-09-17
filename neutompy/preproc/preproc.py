@@ -1,5 +1,8 @@
 import numpy as np
 from numpy import sin, cos
+from mkl_fft import fft, ifft
+from numpy.fft import fftshift, ifftshift
+import pywt
 import matplotlib.pyplot as plt
 from skimage.transform import rotate
 from matplotlib.offsetbox import AnchoredText
@@ -21,7 +24,9 @@ __all__     = ['draw_ROI',
 			   'find_COR',
 			   'correction_COR',
 			   'remove_outliers',
-			   'remove_outliers_stack'
+			   'remove_outliers_stack',
+			   'remove_stripe',
+			   'remove_stripe_stack'
 			  ]
 
 def draw_ROI(img, title, ratio=0.85):
@@ -1069,7 +1074,7 @@ def remove_outliers_stack(arr, radius, threshold, axis=0, outliers='bright', k=1
 
 	Parameters
 	----------
-	img : ndarray
+	arr : ndarray
 		The stack to elaborate.
 
 	radius: int or tuple of int
@@ -1113,3 +1118,50 @@ def remove_outliers_stack(arr, radius, threshold, axis=0, outliers='bright', k=1
 
 	out = out.swapaxes(0, axis)
 	return out
+
+
+def remove_stripe(img, level, wname, sigma):
+
+	# wavelet decomposition.
+	cH = []; cV = []; cD = []
+
+	for i in range(0, level):
+		img, (cHi, cVi, cDi) = pywt.dwt2(img, wname)
+		cH.append(cHi)
+		cV.append(cVi)
+		cD.append(cDi)
+
+	# FFT transform of horizontal frequency bands
+	for i in range(0, level):
+		# FFT
+		fcV=fftshift(fft(cV[i], axis=0))
+		my, mx = fcV.shape
+
+		# damping of vertical stripe information
+		yy2  = (np.arange(-np.floor(my/2), -np.floor(my/2) + my))**2
+		damp = - np.expm1( - yy2 / (2.0*(sigma**2)) )
+		fcV  = fcV * np.tile(damp.reshape(damp.size, 1), (1,mx))
+
+		#inverse FFT
+		cV[i] = np.real( ifft( ifftshift(fcV), axis=0) )
+
+	# wavelet reconstruction
+	for i in  range(level-1, -1, -1):
+		img = img[0:cH[i].shape[0], 0:cH[i].shape[1]]
+		img = pywt.idwt2((img, (cH[i], cV[i], cD[i])), wname)
+
+	return img
+
+def remove_stripe_stack(arr, level, wname, sigma, axis=1):
+
+	if(arr.shape != 3):
+		raise ValueError('Input array must be three-dimensional')
+
+	arr = arr.swapaxes(0, axis)
+
+	for i in tqdm(range(0, arr.shape[0]), unit='images'):
+		arr[i] = remove_stripe(arr[i], level, wname, sigma)
+
+	arr = arr.swapaxes(0, axis)
+
+	return arr
