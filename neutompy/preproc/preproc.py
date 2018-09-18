@@ -1123,7 +1123,7 @@ def remove_outliers_stack(arr, radius, threshold, axis=0, outliers='bright', k=1
 def remove_stripe(img, level, wname='db5', sigma=1.5):
 	"""
 	Suppress horizontal stripe in a sinogram using the Fourier-Wavelet based
-	method by Munch et al. [1]_.
+	method by Munch et al. [2]_.
 
 	Parameters
 	----------
@@ -1146,7 +1146,7 @@ def remove_stripe(img, level, wname='db5', sigma=1.5):
 
 	References
 	----------
-	.. [1] B. Munch, P. Trtik, F. Marone, M. Stampanoni, Stripe and ring artifact removal with
+	.. [2] B. Munch, P. Trtik, F. Marone, M. Stampanoni, Stripe and ring artifact removal with
 	combined wavelet-Fourier filtering, Optics Express 17(10):8567-8591, 2009.
 	"""
 
@@ -1184,7 +1184,7 @@ def remove_stripe(img, level, wname='db5', sigma=1.5):
 def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
 	"""
 	Suppress horizontal stripe in a stack of sinograms or a stack of projections
-	using the Fourier-Wavelet based method by Munch et al. [1]_ .
+	using the Fourier-Wavelet based method by Munch et al. [3]_ .
 
 	Parameters
 	----------
@@ -1218,7 +1218,7 @@ def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
 
 	References
 	----------
-	.. [1] B. Munch, P. Trtik, F. Marone, M. Stampanoni, Stripe and ring artifact removal with
+	.. [3] B. Munch, P. Trtik, F. Marone, M. Stampanoni, Stripe and ring artifact removal with
 		   combined wavelet-Fourier filtering, Optics Express 17(10):8567-8591, 2009.
 	"""
 
