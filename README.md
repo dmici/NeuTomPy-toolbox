@@ -20,9 +20,6 @@ Complete documentation can be found on Read the Docs: <https://neutompy-toolbox.
 
 Tutorials and code examples of typical usage can be found in the folder [examples](https://github.com/dmici/NeuTomPy-toolbox/blob/master/examples).
 
-# Credits
-This software was developed in collaboration with [IMAT](https://www.isis.stfc.ac.uk/Pages/IMAT.aspx) beamline of the pulsed neutron spallation source [ISIS](https://www.isis.stfc.ac.uk/Pages/home.aspx) (UK).
-
 
 # Contact
 If you want to contact us for any reasons, please send an email to: neutompy@gmail.com
