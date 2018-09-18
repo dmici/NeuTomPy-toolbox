@@ -1147,7 +1147,7 @@ def remove_stripe(img, level, wname='db5', sigma=1.5):
 	References
 	----------
 	.. [2] B. Munch, P. Trtik, F. Marone, M. Stampanoni, Stripe and ring artifact removal with
-	combined wavelet-Fourier filtering, Optics Express 17(10):8567-8591, 2009.
+		   combined wavelet-Fourier filtering, Optics Express 17(10):8567-8591, 2009.
 	"""
 
 	# wavelet decomposition.
