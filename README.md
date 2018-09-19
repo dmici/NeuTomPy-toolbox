@@ -27,8 +27,8 @@ $ conda install -c conda-forge numexpr matplotlib astropy tifffile opencv scikit
 
 Then install NeuTomPy toolbox:
 
-``` 
-pip install neutompy
+``` console
+$ pip install neutompy
 ``` 
 
 # Documentation
