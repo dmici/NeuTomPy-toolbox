@@ -11,7 +11,6 @@ from neutompy.misc.uitools import get_filename_gui, get_image_gui, get_folder_gu
 from tqdm import tqdm
 
 __author__  = "Davide Micieli"
-__version__ = '1.0.0'
 __all__     = ['read_tiff',
 			 'read_fits',
 			 'read_fits_stack',

@@ -12,7 +12,6 @@ import os
 logs = logging.getLogger(__name__)
 
 __author__  = "Davide Micieli"
-__version__ = '1.0.0'
 __all__     = ['CNR', 'NRMSE', 'SSIM', 'FWHM', 'get_line_profile']
 
 

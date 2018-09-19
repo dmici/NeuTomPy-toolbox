@@ -17,7 +17,6 @@ import sys
 from time import sleep
 
 __author__  = "Davide Micieli"
-__version__ = '1.0.0'
 __all__     = ['draw_ROI',
 			   'normalize_proj',
 			   'log_transform',

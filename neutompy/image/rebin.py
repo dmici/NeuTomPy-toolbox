@@ -2,7 +2,6 @@ import numpy as np
 import logging
 
 __author__  = "Davide Micieli"
-__version__ = '1.0.0'
 __all__     = ['rebin']
 
 

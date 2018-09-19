@@ -5,7 +5,6 @@ import logging
 import tkinter
 
 __author__  = "Davide Micieli"
-__version__ = '1.0.0'
 __all__     = ['get_image_gui',
 	       'save_filename_gui',
 		'get_folder_gui',

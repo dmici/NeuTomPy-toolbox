@@ -9,7 +9,6 @@ from neutompy.recon import optomo
 logs = logging.getLogger(__name__)
 
 __author__  = "Davide Micieli"
-__version__ = '1.0.0'
 __all__     = ['recon_slice',
 	       'recon_stack',
 	       'reconstruct',

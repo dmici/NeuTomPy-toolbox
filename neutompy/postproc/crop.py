@@ -3,7 +3,6 @@ import numexpr as ne
 
 
 __author__  = "Davide Micieli"
-__version__ = '1.0.0'
 __all__     = ['get_circular_mask', 'circular_crop']
 
 def get_circular_mask(nrow, ncol, radius=None, center=None):
