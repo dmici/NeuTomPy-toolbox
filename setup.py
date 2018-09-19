@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="neutompy",
-    version="1.0.0",
+    version="1.0.1",
     author="Davide Micieli",
     author_email="neutompy@gmail.com",
     description="Python package for tomographic data processing and reconstruction",
