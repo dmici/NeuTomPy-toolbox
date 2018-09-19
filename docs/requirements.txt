@@ -13,4 +13,3 @@ SimpleITK
 PyWavelets
 tqdm
 astra-toolbox
-mkl-fft
