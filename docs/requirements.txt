@@ -12,4 +12,3 @@ scikit-image
 SimpleITK
 PyWavelets
 tqdm
-astra-toolbox
