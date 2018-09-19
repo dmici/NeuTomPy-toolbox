@@ -1,4 +1,5 @@
 numpy
+numexpr
 matplotlib
 astropy
 tifffile
@@ -11,3 +12,5 @@ scikit-image
 SimpleITK
 PyWavelets
 tqdm
+astra-toolbox
+mkl-fft
