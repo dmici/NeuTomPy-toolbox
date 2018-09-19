@@ -4,7 +4,7 @@ Installation
 
 NeuTomPy toolbox supports **Linux** and **Windows** 64-bit operating system.
 
-First of all install a `Conda <https://www.anaconda.com/download/>`_  python environment, with  **Python >=3.4**.
+First of all, install a `Conda <https://www.anaconda.com/download/>`_  python environment with **Python >=3.4**.
 
 It is required to install some dependencies, hence run the following inside a ``conda`` environment:
 
