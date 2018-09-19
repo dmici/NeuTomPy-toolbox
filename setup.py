@@ -3,9 +3,12 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+version = {}
+exec(open('neutompy/version.py').read())
+
 setuptools.setup(
     name="neutompy",
-    version="1.0.1",
+    version=__version__,
     author="Davide Micieli",
     author_email="neutompy@gmail.com",
     description="Python package for tomographic data processing and reconstruction",
