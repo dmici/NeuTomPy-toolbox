@@ -16,7 +16,7 @@ the need of users and researchers to compare state-of-the-art reconstruction met
 
 NeuTomPy toolbox supports **Linux** and **Windows** 64-bit operating system.
 
-First of all, install a [conda](https://www.anaconda.com/download/) python environment with  **Python >=3.4**.
+First of all, install a [conda](https://www.anaconda.com/download/) python environment with  **Python 3.5 or 3.6**.
 
 It is required to install some dependencies, hence run the following inside a conda environment:
 ```  console
