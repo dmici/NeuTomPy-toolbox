@@ -529,7 +529,7 @@ def rotate_sitk(img, theta, interpolator=sitk.sitkLinear):
 
 	out = rotate_2(imgpad, theta, interpolator)
 
-	return out[ before[0]:-after[0],before[1]:-after[1] ]
+	return out[ before[0]:(l1+before[0]), before[1]:(l2 + before[1])]
 
 
 
