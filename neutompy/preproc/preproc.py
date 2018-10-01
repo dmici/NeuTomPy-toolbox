@@ -1235,6 +1235,7 @@ def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
 	arr     = arr.swapaxes(0, axis)
 	out_arr = out_arr.swapaxes(0,axis)
 
+	print('Removing stripe...')
 	for i in tqdm(range(0, arr.shape[0]), unit='images'):
 		out_arr[i] = remove_stripe(arr[i], level, wname, sigma)
 
