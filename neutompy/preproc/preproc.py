@@ -1149,6 +1149,8 @@ def remove_stripe(img, level, wname='db5', sigma=1.5):
 		   combined wavelet-Fourier filtering, Optics Express 17(10):8567-8591, 2009.
 	"""
 
+	nrow, ncol = img.shape
+
 	# wavelet decomposition.
 	cH = []; cV = []; cD = []
 
@@ -1177,7 +1179,7 @@ def remove_stripe(img, level, wname='db5', sigma=1.5):
 		img = img[0:cH[i].shape[0], 0:cH[i].shape[1]]
 		img = pywt.idwt2((img, (cH[i], cV[i], cD[i])), wname)
 
-	return img
+	return img[0:nrow, 0:ncol]
 
 
 def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
