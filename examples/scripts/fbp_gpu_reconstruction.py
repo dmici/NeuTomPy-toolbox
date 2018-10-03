@@ -30,7 +30,7 @@ norm = ntp.remove_outliers_stack(norm, radius=3, threshold=0.018, outliers='brig
 # perform minus-log transform
 norm =  ntp.log_transform(norm, out=norm)
 
-# remove stripes from sinograms
+# remove stripes in sinograms
 norm = ntp.remove_stripe_stack(norm, level=4, wname='db30', sigma=1.5, out=norm)
 
 # define the array of the angle views in radians
