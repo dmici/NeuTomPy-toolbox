@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------
 # This script performs FBP, SIRT and CGLS reconstructions of a
 # phantom sample. The reconstructions are compared using several
-# image quality indexis.
+# image quality indexes.
 # -------------------------------------------------------------------
 
 import numpy as np

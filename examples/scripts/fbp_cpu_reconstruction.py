@@ -23,12 +23,15 @@ norm = ntp.correction_COR(norm, norm[0], norm_180)
 # clean up memory
 del dark; del flat; del proj; del proj_180
 
-# remove outliers
-norm = ntp.remove_outliers_stack(norm, 1, 0.1, outliers='dark', out=norm)
-norm = ntp.remove_outliers_stack(norm, 1, 0.08, outliers='bright', out=norm)
+# remove outliers, set the optimal radius and threshold
+norm = ntp.remove_outliers_stack(norm, radius=1, threshold=0.018, outliers='dark', out=norm)
+norm = ntp.remove_outliers_stack(norm, radius=3, threshold=0.018, outliers='bright', out=norm)
 
 # perform minus-log transform
 norm =  ntp.log_transform(norm, out=norm)
+
+# remove stripes in sinograms
+norm = ntp.remove_stripe_stack(norm, level=4, wname='db30', sigma=1.5, out=norm)
 
 # define the array of the angle views in radians
 angles = np.linspace(0, last_angle, norm.shape[0], endpoint=False)
