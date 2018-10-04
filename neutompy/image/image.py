@@ -434,7 +434,7 @@ def read_tiff_stack(fname, slices=[], croi=None, froi=None):
 	folder = os.path.dirname(fname)
 	prefix = os.path.basename(prefix_full)
 
-	flist = [os.path.normpath(os.path.join(folder, f)) for f in sorted(os.listdir(folder)) if (f.startswith(prefix) and (get_file_extension(f) in ['.tif', '.tiff']) ) ]
+	flist = [os.path.normpath(os.path.join(folder, f)) for f in sorted(os.listdir(folder)) if (f.startswith(prefix) and f[-p-len(ext):-len(ext)].isdigit() and (get_file_extension(f) in ['.tif', '.tiff']) ) ]
 
 	out = read_stack_from_list(flist, slices, croi, froi)
 
@@ -489,7 +489,7 @@ def read_fits_stack(fname, slices=[], croi=None, froi=None):
 	folder = os.path.dirname(fname)
 	prefix = os.path.basename(prefix_full)
 
-	flist = [os.path.normpath(os.path.join(folder, f)) for f in sorted(os.listdir(folder)) if (f.startswith(prefix) and (get_file_extension(f) in ['.fits']) ) ]
+	flist = [os.path.normpath(os.path.join(folder, f)) for f in sorted(os.listdir(folder)) if (f.startswith(prefix) and f[-p-len(ext):-len(ext)].isdigit() and (get_file_extension(f) in ['.fits']) ) ]
 
 	out = read_stack_from_list(flist, slices, croi, froi)
 
