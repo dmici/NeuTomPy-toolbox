@@ -13,5 +13,5 @@ This section includes some example scripts.
   examples/compare
 
 A sample dataset for testing purpose can be found `here  <https://mega.nz/#F!k0g32QiC!zbGZMuTES4WOzrxJEfPaSA>`_ .
-The dataset includes neutron radiographs of a phantom sample acquired at the IMAT beamline, ISIS neutron
+This dataset includes neutron radiographs of a phantom sample acquired at the IMAT beamline, ISIS neutron
 spallation source, UK.

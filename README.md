@@ -36,6 +36,7 @@ Complete documentation can be found on Read the Docs: <https://neutompy-toolbox.
 
 Tutorials and code examples of typical usage can be found in the folder [examples](https://github.com/dmici/NeuTomPy-toolbox/blob/master/examples).
 
+A sample dataset for testing purpose can be found [here](https://mega.nz/#F!k0g32QiC!zbGZMuTES4WOzrxJEfPaSA). This dataset includes neutron radiographs of a phantom sample acquired at the IMAT beamline, ISIS neutron spallation source, UK.
 
 # Contact
 If you want to contact us for any reasons, please send an email to: neutompy@gmail.com
