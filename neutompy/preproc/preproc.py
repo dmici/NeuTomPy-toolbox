@@ -78,7 +78,7 @@ def draw_ROI(img, title, ratio=0.85):
 	mu = np.nanmedian(img.ravel())
 	finite_vals = np.nonzero(np.isfinite(img))
 	s  = img[finite_vals].std()
-	img = img/(mu+1*s)  # normalization can be improved
+	img = img/(mu+2*s)  # normalization can be improved
 	imgshow = np.clip(img, 0, 1.0)
 
 	condition = True
