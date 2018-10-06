@@ -12,6 +12,6 @@ This section includes some example scripts.
   examples/sirt_gpu
   examples/compare
 
-A sample neutron dataset can be found `here  <https://mega.nz/#F!k0g32QiC!zbGZMuTES4WOzrxJEfPaSA>`_ for testing purpose.
+A sample dataset for testing purpose can be found `here  <https://mega.nz/#F!k0g32QiC!zbGZMuTES4WOzrxJEfPaSA>`_ .
 The dataset includes neutron radiographs of a phantom sample acquired at the IMAT beamline, ISIS neutron
 spallation source, UK.
