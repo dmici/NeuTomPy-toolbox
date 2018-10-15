@@ -1,5 +1,5 @@
 # NeuTomPy toolbox
-<img style="float: center;" src="https://github.com/dmici/NeuTomPy-toolbox/blob/master/img/logo_neutompy.png" width="800">
+<img src="https://github.com/dmici/NeuTomPy-toolbox/blob/master/img/logo_neutompy.png" width="850">
 
 **NeuTomPy toolbox** is a Python package for tomographic data processing and reconstruction.
 Such toolbox includes pre-processing algorithms, artifacts removal and a wide range of iterative
