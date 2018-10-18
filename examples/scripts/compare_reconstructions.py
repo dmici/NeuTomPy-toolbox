@@ -72,7 +72,7 @@ plt.rc('axes', labelsize=12)
 
 fig = plt.figure(figsize=(nsquare*nsubplot,nsquare+1+0.5))
 fig.subplots_adjust(hspace=0, wspace=0.5, top=0.8)
-gs = GridSpec(nsquare+1,nsquare*nsubplot) # 2 rows, 3 columns
+gs = GridSpec(nsquare+1,nsquare*nsubplot)
 
 for i in range(0, nsubplot):
 
@@ -89,7 +89,7 @@ for i in range(0, nsubplot):
 	plt.xticks([])
 	plt.yticks([])
 
-	ax2=fig.add_subplot(gs[nsquare,i*nsquare:(i+1)*nsquare]) # Second row, span all columns
+	ax2=fig.add_subplot(gs[nsquare,i*nsquare:(i+1)*nsquare]) 
 	# generate histogram of the gray values inside a circular mask
 	mask = ntp.get_circular_mask(img.shape[0], img.shape[1], radius=370, center=(img.shape[0]//2, img.shape[0]//2 -30))
 	cc, edge = np.histogram(img[mask], bins=binning)
