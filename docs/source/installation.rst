@@ -21,9 +21,9 @@ Then install NeuTomPy toolbox via ``pip``:
     pip install neutompy
 
 
-===============
-Update NeuTomPy
-===============
+======
+Update
+======
 
 To update a NeuTomPy installation to the latest version run:
 
