@@ -31,6 +31,12 @@ Then install NeuTomPy toolbox via `pip`:
 ``` console
 $ pip install neutompy
 ```
+# Update
+
+To update a NeuTomPy installation to the latest version run:
+``` console
+$ pip install neutompy --upgrade
+```
 
 # Documentation
 Complete documentation can be found on Read the Docs: <https://neutompy-toolbox.readthedocs.io>.
