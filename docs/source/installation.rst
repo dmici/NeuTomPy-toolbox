@@ -19,3 +19,14 @@ Then install NeuTomPy toolbox via ``pip``:
 .. code-block:: bash
 
     pip install neutompy
+
+
+===============
+Update NeuTomPy
+===============
+
+To update a NeuTomPy installation to the latest version run:
+
+.. code-block:: bash
+
+    pip install neutompy --upgrade
