@@ -45,6 +45,12 @@ def CNR(img, croi_signal=[], croi_background=[], froi_signal=[], froi_background
 	-------
 	CNR : float
 		The CNR value computed using the ROIs given.
+	
+	References
+	----------
+	.. [1] D. Micieli et al., A comparative analysis of reconstruction methods
+	 applied to Neutron Tomography, Journal of Instrumentation, Volume 13,
+	 June 2018.
 	"""
 
 	if(img.ndim != 2):
@@ -309,12 +315,6 @@ def FWHM(profile, yerr=None):
 
 	perr : list
 		List containing the errors of the fitting parameters.
-
-	References
-	----------
-	.. [1] D. Micieli et al., A comparative analysis of reconstruction methods
-	 applied to Neutron Tomography, Journal of Instrumentation, Volume 13,
-	 June 2018.
 
 	"""
 
