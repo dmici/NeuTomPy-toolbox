@@ -45,7 +45,7 @@ def CNR(img, croi_signal=[], croi_background=[], froi_signal=[], froi_background
 	-------
 	CNR : float
 		The CNR value computed using the ROIs given.
-	
+
 	References
 	----------
 	.. [1] D. Micieli et al., A comparative analysis of reconstruction methods
@@ -345,7 +345,7 @@ def FWHM(profile, yerr=None):
 
 def SSIM(img1, img2, circ_crop=True, L=None, K1=0.01, K2 = 0.03, sigma=1.5, local_ssim=False):
 	"""
-	This function computes the Structural Similarity Index (SSIM) [1]_.
+	This function computes the Structural Similarity Index (SSIM) [2]_.
 	It returns global SSIM value and, optionally, the local SSIM map.
 
 	Parameters
@@ -366,10 +366,10 @@ def SSIM(img1, img2, circ_crop=True, L=None, K1=0.01, K2 = 0.03, sigma=1.5, loca
 		the image data-type.
 
 	K1 : float, optional
-		A constant that prevents the division by zero (see [1]_).
+		A constant that prevents the division by zero (see [2]_).
 
 	K2 : float, optional
-		A constant that prevents the division by zero (see [1]_).
+		A constant that prevents the division by zero (see [2]_).
 
 	sigma : float, optional
 		The standard deviation of the Gaussian filter. This parameter
@@ -389,7 +389,7 @@ def SSIM(img1, img2, circ_crop=True, L=None, K1=0.01, K2 = 0.03, sigma=1.5, loca
 
 	References
 	----------
-	.. [1] Wang, Z., Bovik, A. C., Sheikh, H. R., & Simoncelli, E. P.
+	.. [2] Wang, Z., Bovik, A. C., Sheikh, H. R., & Simoncelli, E. P.
 		(2004). Image quality assessment: From error visibility to
 		structural similarity. IEEE Transactions on Image Processing,
 		13, 600-612.
