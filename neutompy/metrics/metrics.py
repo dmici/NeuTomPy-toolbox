@@ -9,6 +9,7 @@ from neutompy.image.image import get_rect_coordinates_from_roi
 import logging
 import os
 from scipy.optimize import curve_fit
+from scipy.special import erf
 
 logs = logging.getLogger(__name__)
 
