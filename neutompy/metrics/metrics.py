@@ -289,7 +289,7 @@ def FWHM(profile, yerr=None):
 	fwhm     = k / p1
 	fwhm_err = k*p1_err / (p1**2)
 
-	profile_fitted = esf_gaus(xdata, *popt)
+	profile_fitted = sigmoid_gaus(xdata, *popt)
 
 	return fwhm, fwhm_err, profile_fitted, popt, perr
 
