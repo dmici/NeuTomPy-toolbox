@@ -19,27 +19,27 @@ __all__     = ['CNR', 'NRMSE', 'SSIM', 'FWHM', 'get_line_profile']
 
 def CNR(img, croi_signal=[], croi_background=[], froi_signal=[], froi_background=[]):
 	"""
-	This function computes the Contrast-to-Noise Ratio (CNR).
-
-	The ROI of the signal and the background can be defined using two lists of coordinates or two ImageJ .roi files.
+	This function computes the Contrast-to-Noise Ratio (CNR) as reported in
+	the equation (2.7) of [1]_.
+	The ROI of the signal and the background can be defined using two lists of
+	coordinates or two ImageJ .roi files.
 
 	Parameters
 	----------
-
 	img :  2d array
-		The array representing the image
+		The array representing the image.
 
 	croi_signal : list
-		List that contains the following coordinate of the signal roi: [rowmin, rowmax, colmin, colmax]
+		List that contains the following coordinate of the signal roi: [rowmin, rowmax, colmin, colmax].
 
 	croi_background : list
-		List that contains the following coordinate of the background roi: [rowmin, rowmax, colmin, colmax]
+		List that contains the following coordinate of the background roi: [rowmin, rowmax, colmin, colmax].
 
 	froi_signal : string
-		Path of the imagej file containing the rectangular ROI of the signal
+		Path of the imagej file containing the rectangular ROI of the signal.
 
 	froi_background : string
-		Path of the imagej file containing the rectangular ROI of the background
+		Path of the imagej file containing the rectangular ROI of the background.
 
 	Returns
 	-------
@@ -168,7 +168,8 @@ def get_line_profile(image, start=(), end=(), froi='', ShowPlot=True, PlotTitle=
 
 def NRMSE(img, ref,  mask='whole'):
 	"""
-	This function computes the Normalized Root Mean Square Error of an image respect to a reference image.
+	This function computes the Normalized Root Mean Square Error (see eq. 2.9
+	in [1]_) of an image respect to a reference image.
 
 	Parameters
 	----------
@@ -243,7 +244,9 @@ def NRMSE(img, ref,  mask='whole'):
 
 def sigmoid_gaus(x, k0, k1, k2, k3):
 	"""
-	This function computes the Gauss error function obtained by integrating the Gauss function.
+	This function computes a general formula of the Gauss error function.
+	The exact formula implemented is f(x) = 0.5 * k0 * (Erf(k1*(x - k2)) + 1.0) + k3,
+	where Erf is the  Gauss error function, k0, k1, k2, k3 and k4 are constants.
 
 	Parameters
 	----------
@@ -261,6 +264,11 @@ def sigmoid_gaus(x, k0, k1, k2, k3):
 
 	k3 : float
 		The bias parameter.
+
+	Returns
+	-------
+	val : float
+		The function value.
 	"""
 	val = 0.5 * k0 * (erf(k1*(x - k2)) + 1.0) + k3
 	return val
@@ -268,6 +276,47 @@ def sigmoid_gaus(x, k0, k1, k2, k3):
 
 
 def FWHM(profile, yerr=None):
+	"""
+	This functions computes an edge quality metric from a profile of a sharp edge.
+	The profile is fitted with a generic Gauss sigmoid function.
+	The fitting function was then differentiated and the FWHM of the gaussian
+	obtained is returned by the function.
+	This method is described in detail in [1]_.
+
+	Parameters
+	----------
+	profile : 1d array
+		The line profile of the sharp edge.
+
+	yerr : 1d array, optional
+		The vector containing the standard deviation of the edge profile.
+		If not specified the standard deviation of each point is assumed equal
+		to 1.0.
+
+	Returns
+	-------
+	fwhm : float
+		The FWHM mean value.
+
+	fwhm_err : float
+		The FWHM error value
+
+	profile_fitted: 1d array
+		The Gauss sigmoid function evaluated for the fitting parameters.
+
+	popt : list
+		List containing the fitting parameters.
+
+	perr : list
+		List containing the errors of the fitting parameters.
+
+	References
+	----------
+	.. [1] D. Micieli et al., A comparative analysis of reconstruction methods
+	 applied to Neutron Tomography, Journal of Instrumentation, Volume 13,
+	 June 2018.
+
+	"""
 
 	npoints = profile.size
 	xdata   = np.arange(npoints)
