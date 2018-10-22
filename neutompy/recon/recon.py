@@ -56,7 +56,7 @@ def get_astra_proj_matrix(nd, angles, method):
 	proj_geom = astra.create_proj_geom('parallel', 1.0, nd, angles)
 
 	# Create the ASTRA projector
-	if (method.endswith('CUDA') or method=='NN-FBP-train' or method=='NN-FBP-prepare'):
+	if (method.endswith('CUDA') or method.startswith('NN-FBP')):
 		pid = astra.create_projector('cuda', proj_geom, vol_geom)    # GPU
 	else:
 		pid = astra.create_projector('linear', proj_geom, vol_geom)  # CPU
