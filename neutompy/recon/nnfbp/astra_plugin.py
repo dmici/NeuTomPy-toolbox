@@ -151,7 +151,7 @@ class plugin_prepare(astra.plugin.ReconstructionAlgorithm2D):
                 img = customFBP(self.W, bas, s)
                 out[:,i+(l+1)*self.nf] = img[pl[:,0],pl[:,1]]
         sio.savemat(self.outfn,{'mat':out},do_compression=True)
-        astra.log.info('Slice {} done...'.format(self.z_id))
+        #astra.log.info('Slice {} done...'.format(self.z_id))
 
 import numexpr
 import time

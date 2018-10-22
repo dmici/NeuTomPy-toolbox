@@ -160,6 +160,8 @@ class OpTomo(scipy.sparse.linalg.LinearOperator):
         if 'FilterType' in list(extraOptions.keys()):
             cfg['FilterType'] = extraOptions['FilterType']
             opts = {key: extraOptions[key] for key in extraOptions if key != 'FilterType'}
+        else:
+            opts = extraOptions
         
         cfg['option'] = opts
         alg_id = algorithm.create(cfg)

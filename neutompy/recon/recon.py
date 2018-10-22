@@ -257,7 +257,13 @@ def recon_stack(proj, method, pmat, parameters=None, pixel_size=1.0, offset=0, s
 	nslice, na, nd = proj.shape
 
 	rec = np.zeros((nslice, nd, nd), dtype=np.float32)
-
+	
+	if(method=='NN-FBP-train' or  method=='NN-FBP-prepare'):
+		print('> NN-FBP Training...')
+	
+	if(method=='NN-FBP'):
+		print('> NN-FBP Reconstruction')
+	
 	for s in tqdm(range(0, nslice), unit=' slices'):
 
 		if(method=='NN-FBP-train' or  method=='NN-FBP-prepare'):
