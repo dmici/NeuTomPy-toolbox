@@ -1003,8 +1003,8 @@ def remove_outliers(img, radius, threshold, outliers='bright', k=1.0, out=None):
 	This function removes bright and dark outliers from an image.
 	It replaces a pixel by the median of the pixels in the neighborhood
 	if it deviates from the median by more than a certain value (k*threshold).
-	The threshold can be specified by the user as a global value or computed as
-	the local standard deviation map.
+	The threshold can be specified by the user as a global value or computed
+	proportionally to the local standard deviation of the projection.
 
 	Parameters
 	----------
@@ -1068,8 +1068,8 @@ def remove_outliers_stack(arr, radius, threshold, axis=0, outliers='bright', k=1
 	images in the stack.
 	The function replaces a pixel by the median of the pixels in the 2d neighborhood
 	if it deviates from the median by more than a certain value (k*threshold).
-	The threshold can be specified by the user as a global value or computed as
-	the local standard deviation map.
+	The threshold can be specified by the user as a global value or computed
+	proportionally to the local standard deviation of the projection.
 
 	Parameters
 	----------
