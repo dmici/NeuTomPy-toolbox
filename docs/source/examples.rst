@@ -10,6 +10,7 @@ This section includes some example scripts.
   examples/fbp_gpu
   examples/fbp_cpu
   examples/sirt_gpu
+  examples/nnfbp
   examples/compare
 
 A sample dataset for testing purpose can be found `here  <https://mega.nz/#F!k0g32QiC!zbGZMuTES4WOzrxJEfPaSA>`_ .
