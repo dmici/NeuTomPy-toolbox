@@ -1,8 +1,8 @@
 # -------------------------------------------------------------------
-# This script show an usage example of the NN-FBP method.
-# A complete dataset is reconstructed via FBP and the NN-FBP is 
+# This script shows an usage example of the NN-FBP method.
+# A complete dataset is reconstructed via FBP and the NN-FBP is
 # trained to reconstruct some reconstructed slices using a sparse-view
-# dataset. Then different slices are reconstructed via NN-FBP. 
+# dataset. Then different slices are reconstructed via NN-FBP.
 # -------------------------------------------------------------------
 
 import numpy as np
@@ -48,7 +48,7 @@ except OSError:
 	pass
 ntp.write_tiff_stack(hqrec_folder + 'sample', rec)
 
-# NN-FBP training 
+# NN-FBP training
 skip  = 3  # reduction factor of the full dataset to obtain the sparse-view dataset
 norm_train = norm[::skip,train_slice_start:train_slice_end+1, :]
 ntp.reconstruct(norm_train, angles[::skip], 'NN-FBP-train', parameters=conf)
