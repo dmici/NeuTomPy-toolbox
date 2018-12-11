@@ -10,11 +10,12 @@ import logging
 import os
 from scipy.optimize import curve_fit
 from scipy.special import erf
+from scipy import signal
 
 logs = logging.getLogger(__name__)
 
 __author__  = "Davide Micieli"
-__all__     = ['CNR', 'NRMSE', 'SSIM', 'FWHM', 'get_line_profile']
+__all__     = ['CNR', 'NRMSE', 'SSIM', 'FWHM', 'get_line_profile', 'GMSD']
 
 
 def CNR(img, croi_signal=[], croi_background=[], froi_signal=[], froi_background=[]):
@@ -413,3 +414,72 @@ def SSIM(img1, img2, circ_crop=True, L=None, K1=0.01, K2 = 0.03, sigma=1.5, loca
 
 	val = compare_ssim(vimg1, vimg2, data_range=L, gaussian_weights=True, sigma=sigma, k1=K1, K2=K2, use_sample_covariance=False, full=local_ssim)
 	return val
+
+
+def GMSD(img, ref, rescale=True, map=False):
+	"""
+	This function computes the Gradient Magnitude Similarity Deviation (GMSD).
+	This is a Python version of the Matlab script provided by the authors.
+
+	Parameters
+	----------
+	img : 2d array
+		Image to compare.
+
+	ref : 2d array
+		Reference image.
+
+	rescale : bool, optional
+		If True the input images were rescaled in such a way that `ref` has a
+		maximum pixel value of 255. If False no rescaling is performed.
+		Default is True.
+
+	map : bool, optional
+		If True the GMSD and GMS map are returned in a tuple.
+
+	Returns
+	-------
+	gmsd_val : float
+		The GMSD value.
+
+	gms_map : 2d array
+		The GMS map.
+
+	References
+	----------
+	.. [3] Wufeng Xue, Lei Zhang, Xuanqin Mou, and Alan C. Bovik,  "Gradient Magnitude
+		Similarity Deviation: A Highly Efficient Perceptual Image Quality Index",
+		http://www.comp.polyu.edu.hk/~cslzhang/IQA/GMSD/GMSD.htm
+	"""
+	if rescale:
+		k = 255.0 / ref.max()
+	else:
+		k = 1.0
+	
+	T = 170
+	downscale = 2
+	hx = (1.0/3.0) * np.array([[1, 0, -1],
+							   [1, 0, -1],
+							   [1, 0, -1]])
+	hy = hx.T
+	
+	avg_kernel = np.ones((2, 2)) / 4.0
+	avg_ref = signal.convolve2d(k * ref, avg_kernel, mode='same', boundary='symm')[::downscale,::downscale]
+	avg_img = signal.convolve2d(k * img, avg_kernel, mode='same', boundary='symm')[::downscale,::downscale]
+	
+	ref_dx =  signal.convolve2d(avg_ref, hx, mode='same', boundary='symm')
+	ref_dy =  signal.convolve2d(avg_ref, hy, mode='same', boundary='symm')
+	MG_ref =  np.sqrt(ref_dx**2 + ref_dy**2)
+
+	img_dx =  signal.convolve2d(avg_img, hx, mode='same', boundary='symm')
+	img_dy =  signal.convolve2d(avg_img, hy, mode='same', boundary='symm')
+	MG_img =  np.sqrt(img_dx**2 + img_dy**2)
+	
+	gms_map = (2*MG_ref*MG_img + T) / (MG_img**2 + MG_ref**2)
+	
+	gmsd_val = np.std(gms_map)
+	
+	if map:
+		return gmsd_val, gms_map
+	else:
+		return gmsd_val
