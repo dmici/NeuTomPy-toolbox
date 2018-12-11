@@ -455,18 +455,18 @@ def GMSD(img, ref, rescale=True, map=False):
 		k = 255.0 / ref.max()
 	else:
 		k = 1.0
-	
+
 	T = 170
 	downscale = 2
 	hx = (1.0/3.0) * np.array([[1, 0, -1],
 							   [1, 0, -1],
 							   [1, 0, -1]])
 	hy = hx.T
-	
+
 	avg_kernel = np.ones((2, 2)) / 4.0
 	avg_ref = signal.convolve2d(k * ref, avg_kernel, mode='same', boundary='symm')[::downscale,::downscale]
 	avg_img = signal.convolve2d(k * img, avg_kernel, mode='same', boundary='symm')[::downscale,::downscale]
-	
+
 	ref_dx =  signal.convolve2d(avg_ref, hx, mode='same', boundary='symm')
 	ref_dy =  signal.convolve2d(avg_ref, hy, mode='same', boundary='symm')
 	MG_ref =  np.sqrt(ref_dx**2 + ref_dy**2)
@@ -474,11 +474,11 @@ def GMSD(img, ref, rescale=True, map=False):
 	img_dx =  signal.convolve2d(avg_img, hx, mode='same', boundary='symm')
 	img_dy =  signal.convolve2d(avg_img, hy, mode='same', boundary='symm')
 	MG_img =  np.sqrt(img_dx**2 + img_dy**2)
-	
-	gms_map = (2*MG_ref*MG_img + T) / (MG_img**2 + MG_ref**2)
-	
+
+	gms_map = (2*MG_ref*MG_img + T) / (MG_img**2 + MG_ref**2 + T)
+
 	gmsd_val = np.std(gms_map)
-	
+
 	if map:
 		return gmsd_val, gms_map
 	else:
