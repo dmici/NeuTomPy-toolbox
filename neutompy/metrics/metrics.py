@@ -419,7 +419,7 @@ def SSIM(img1, img2, circ_crop=True, L=None, K1=0.01, K2 = 0.03, sigma=1.5, loca
 def GMSD(img, ref, rescale=True, map=False):
 	"""
 	This function computes the Gradient Magnitude Similarity Deviation (GMSD).
-	This is a Python version of the Matlab script provided by the authors.
+	This is a Python version of the Matlab script provided by the authors in [3]_
 
 	Parameters
 	----------
@@ -432,10 +432,11 @@ def GMSD(img, ref, rescale=True, map=False):
 	rescale : bool, optional
 		If True the input images were rescaled in such a way that `ref` has a
 		maximum pixel value of 255. If False no rescaling is performed.
-		Default is True.
+		Default value is True.
 
 	map : bool, optional
 		If True the GMSD and GMS map are returned in a tuple.
+		Default value is False.
 
 	Returns
 	-------
