@@ -444,7 +444,7 @@ def GMSD(img, ref, rescale=True, map=False):
 		The GMSD value.
 
 	gms_map : 2d array
-		The GMS map.
+		The GMS map, returned only if `map` is True.
 
 	References
 	----------
