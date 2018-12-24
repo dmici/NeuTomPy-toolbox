@@ -24,7 +24,7 @@ conf['filter_file']   = 'filters.mat'  # file to store trained filters
 # set the last angle value of the CT scan: np.pi or 2*np.pi
 last_angle = 2*np.pi
 
-# read dataset containg projection, dark-field, flat-field images and the projection at 180 degree
+# read dataset containing projection, dark-field, flat-field images and the projection at 180 degree
 proj, dark, flat, proj_180 = ntp.read_dataset()
 
 # normalize the projections to dark-field, flat-field images and neutron dose
