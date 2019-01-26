@@ -15,7 +15,7 @@ the need of users and researchers to compare state-of-the-art reconstruction met
 
 # Installation
 
-NeuTomPy toolbox supports **Linux**, **Windows** and **Mac OS** 64-bit operating system.
+NeuTomPy toolbox supports **Linux**, **Windows** and **Mac OS** 64-bit operating systems.
 
 First of all, install a [conda](https://www.anaconda.com/download/) python environment with  **Python 3.5 or 3.6**.
 
