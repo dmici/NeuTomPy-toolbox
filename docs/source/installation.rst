@@ -12,7 +12,7 @@ It is required to install some dependencies, hence run the following inside a ``
 
     conda install -c simpleitk simpleitk
     conda install -c astra-toolbox astra-toolbox
-    conda install -c conda-forge  ipython numpy numexpr matplotlib astropy tifffile opencv scikit-image read-roi mkl_fft scipy six tqdm pywavelets
+    conda install -c conda-forge ipython numpy numexpr matplotlib astropy tifffile opencv scikit-image read-roi mkl_fft scipy six tqdm pywavelets
 
 Then install NeuTomPy toolbox via ``pip``:
 
