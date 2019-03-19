@@ -52,11 +52,14 @@ Tutorials and code examples of typical usage can be found in the folder [example
 
 A sample dataset for testing purpose can be found [here](https://mega.nz/#F!k0g32QiC!zbGZMuTES4WOzrxJEfPaSA). This dataset includes neutron radiographs of a phantom sample acquired at the IMAT beamline, ISIS neutron spallation source, UK.
 
+# Reference
+If you use the NeuTomPy toolbox for your research, please cite the following paper:
+
+D. Micieli, T. Minniti, G. Gorini, “NeuTomPy toolbox, a Python package for tomographic data processing and reconstruction”, SoftwareX, Volume 9 (2019), pp. 260-264, https://doi.org/10.1016/j.softx.2019.01.005.
+
+
+# License
+The project is licensed under the [GPLv3](https://github.com/dmici/NeuTomPy-toolbox/blob/master/LICENSE) license.
+
 # Contact
 If you want to contact us for any reasons, please send an email to: neutompy@gmail.com
-
-
-License
-=======
-
-The project is licensed under the [GPLv3](https://github.com/dmici/NeuTomPy-toolbox/blob/master/LICENSE) license.
