@@ -20,6 +20,12 @@ Features
 * A wide range of reconstruction algorithms powered by `ASTRA toolbox <https://www.astra-toolbox.com/>`_ : FBP, SIRT, SART, ART, CGLS, NN-FBP, MR-FBP
 * Image quality assessment with several metrics
 
+Reference
+=========
+If you use the NeuTomPy toolbox for your research, please cite the following paper:
+
+D. Micieli, T. Minniti, G. Gorini, “NeuTomPy toolbox, a Python package for tomographic data processing and reconstruction”, SoftwareX, Volume 9 (2019), pp. 260-264, https://doi.org/10.1016/j.softx.2019.01.005.
+
 Table of Contents
 =================
 
