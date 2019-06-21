@@ -796,12 +796,12 @@ def correction_COR(norm_proj, proj_0, proj_180, show_opt='mean', shift=None,
 
 		Default value is ``mean``.
 
-	shift: int, optinal
+	shift: int, optional
 		The horizontal shift in pixel of the rotation axis respect to the
 		vertical axis of the detector. It can be specified if known parameter.
 		The default is None, hence this parameter is estimated from the projections.
 
-	theta: int, optinal
+	theta: float, optional
 		The tilt angle in degrees of the rotation axis respect to the vertical
 		axis of the detector. It can be specified if known parameter.
 		The default is None, hence this parameter is estimated from the projections.
