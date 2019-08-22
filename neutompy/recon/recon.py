@@ -25,7 +25,7 @@ astra.plugin.register(mrfbp.plugin)
 def angles(n_angles, start_angle=0., end_angle=360., scan_mode="regular"):
 	"""
 	This function returns projection angles in radians for different type of angular scan.
-	It allows to generate uniformly distributed angles in the range [start_angle, end_angle) or a Golden ratio based sequence of projection angles [ref].
+	It allows to generate uniformly distributed angles in the range [start_angle, end_angle) or a Golden ratio based sequence of projection angles [1]_.
 
 	Parameters
 	----------
@@ -52,7 +52,7 @@ def angles(n_angles, start_angle=0., end_angle=360., scan_mode="regular"):
 		The sequence of the projection angles in radians.
 	References
 	----------
-	.. [1] T. Kohler, A projection access scheme for iterative reconstruction based on the golden section", IEEE Symposium Conference Record Nuclear Science 2004., Rome, 2004, pp. 3961-3965 Vol. 6.
+	.. [1] T. Kohler, A projection access scheme for iterative reconstruction based on the golden section, IEEE Symposium Conference Record Nuclear Science 2004., Rome, 2004, pp. 3961-3965 Vol. 6.
 	"""
 
 	if scan_mode == "regular":
