@@ -12,7 +12,8 @@ __author__  = "Davide Micieli"
 __all__     = ['recon_slice',
 	       'recon_stack',
 	       'reconstruct',
-	       'get_astra_proj_matrix']
+	       'get_astra_proj_matrix',
+		   'angles']
 
 # register nn-fbp training and rec plugin
 astra.plugin.register(nnfbp.plugin_prepare)
@@ -20,6 +21,50 @@ astra.plugin.register(nnfbp.plugin_rec)
 
 # register mr-fbp plugin
 astra.plugin.register(mrfbp.plugin)
+
+def angles(n_angles, start_angle=0., end_angle=360., scan_mode="regular"):
+	"""
+	This function returns projection angles in radians for different type of angular scan.
+	It allows to generate uniformly distributed angles in the range [start_angle, end_angle) or a Golden ratio based sequence of projection angles [ref].
+
+	Parameters
+	----------
+	n_angles : int
+		Number of projections.
+
+	start_angle : float, optional
+		First angle of the sequence in degrees.
+		The parameter is ignored if scan_mode is set to 'golden_ratio'.
+
+	end_angle : float, optional
+		Last angle of the sequence in degrees.
+		The parameter is ignored if scan_mode is set to 'golden_ratio'.
+
+	scan_mode : str, optional
+		It defines the type of the angular scan.
+		Allowed values are:
+		- ``regular`` uniformly distributed projections in the range [start_angle, end_angle);
+		- ``golden_ratio`` projections angles according to a Golden ratio based sequence.
+
+	Returns
+	-------
+	angles : 1D array
+		The sequence of the projection angles in radians.
+	References
+	----------
+	.. [1] T. Kohler, A projection access scheme for iterative reconstruction based on the golden section", IEEE Symposium Conference Record Nuclear Science 2004., Rome, 2004, pp. 3961-3965 Vol. 6.
+	"""
+
+	if scan_mode == "regular":
+		c0 = np.pi / 180.0
+		return np.linspace(start_angle * c0, end_angle * c0, n_angles,  endpoint=False)
+
+	if scan_mode == "golden_ratio":
+		fi = 0.5 * (np.sqrt(5.0)  + 1.0)
+		return np.mod(np.arange(n_angles) * fi * np.pi,  np.pi)
+
+	raise ValueError("Invalid value of the parameter scan_mode. Allowed values are: 'regular' and 'golden_ratio'.")
+
 
 
 def get_astra_proj_matrix(nd, angles, method):
