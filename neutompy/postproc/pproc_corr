@@ -1,0 +1,34 @@
+import numpy as np
+import numexpr as ne
+
+
+__author__  = "Triestino Minniti"
+__all__     = ['zero_clipping_value']
+
+
+
+def zero_clipping_value(rec, cl=0.01, out=None):
+    """
+	This function calculate the value that is clipped to a clipping value cl to prevent values 
+        close to (or below) zero to introduce new artefacts. 
+	
+	s’ = MAX ( s, cl)
+        
+	Parameters
+	----------
+	norm :  3d array
+		Three-dimensional stack of the normalized projections
+		
+	cl :    float, optional
+	        Clipping value	       
+	        
+	Returns
+	-------
+	out : ndarray
+	      Clipping value correction of the input array.
+    """
+	
+    print('Clipping value correction...')
+    out = np.zeros(rec.shape, dtype=np.float32)
+    out = np.clip(rec, a_min=cl, a_max=rec.max())
+    return out
