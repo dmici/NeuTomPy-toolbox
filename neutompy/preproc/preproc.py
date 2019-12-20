@@ -28,6 +28,10 @@ __all__     = ['draw_ROI',
 			   'remove_stripe_stack'
 			  ]
 
+__author__  = "Triestino Minniti"
+__all__     = ['simple_BHC', 'zero_clipping_value']
+
+
 def draw_ROI(img, title, ratio=0.85):
 	"""
 	This function allows to select interactively a rectangular region of interest
@@ -1243,3 +1247,69 @@ def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
 	out_arr = out_arr.swapaxes(0,axis)
 
 	return out_arr
+
+
+def simple_BHC(norm, a0=0., a1=0., a2=0., a3=0., out=None):
+    """
+	This function perform the simple beam hardening correction (BHC) corresponds to 
+	a polynomial correction, where the user can choose 4 parameters which define 
+	a 5-th order polynomial.
+	
+	s = -ln(I/I 0 )
+        s’= s + a0*s^2 + a1*s^3 + a2*s^4 + a3*s^5
+	Parameters
+	----------
+	norm :  3d array
+		Three-dimensional stack of the normalized projections
+		
+	a0 :    float, optional
+	        The first term of the polinom
+	        
+	a1 :    float, optional
+	        The second term of the polinom
+	        
+	a2 :    float, optional
+	        The third term of the polinom
+	        
+	a3 :    float, optional
+	        The fourth term of the polinom
+	        
+	Returns
+	-------
+	out : ndarray
+	      Beam hardening correction (BHC) of the input array.
+    """
+    
+    print('Simple beam hardening correction...')
+    out = ne.evaluate('norm + a0*norm**2 + a1*norm**3 + a2*norm**4 + a3*norm**5', out=out)
+    return out
+    
+    
+def zero_clipping_value(rec, cl=0.01, out=None):
+    """
+	This function calculate the value that is clipped to a clipping value cl to prevent values 
+        close to (or below) zero to introduce new artefacts. 
+	
+	s’ = MAX ( s, cl)
+        
+	Parameters
+	----------
+	norm :  3d array
+		Three-dimensional stack of the normalized projections
+		
+	cl :    float, optional
+	        Clipping value	       
+	        
+	Returns
+	-------
+	out : ndarray
+	      Clipping value correction of the input array.
+    """
+	
+    print('Clipping value correction...')
+    out = np.zeros(rec.shape, dtype=np.float32)
+    out = np.clip(rec, a_min=cl, a_max=rec.max())
+    return out
+
+
+
