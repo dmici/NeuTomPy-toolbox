@@ -16,7 +16,7 @@ from tqdm import tqdm
 import sys
 from time import sleep
 
-__author__  = "Davide Micieli"
+__author__  = "Davide Micieli, Triestino Minniti"
 __all__     = ['draw_ROI',
 			   'normalize_proj',
 			   'log_transform',
@@ -25,11 +25,9 @@ __all__     = ['draw_ROI',
 			   'remove_outliers',
 			   'remove_outliers_stack',
 			   'remove_stripe',
-			   'remove_stripe_stack'
+			   'remove_stripe_stack',
+	       		   'simple_BHC'
 			  ]
-
-__author__  = "Triestino Minniti"
-__all__     = ['simple_BHC']
 
 
 def draw_ROI(img, title, ratio=0.85):
@@ -1249,7 +1247,7 @@ def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
 	return out_arr
 
 
-def simple_BHC(norm, a0=0., a1=0., a2=0., a3=0., out=None):
+def simple_BHC(norm, a0=0., a1=0., a2=0.02, a3=0., out=None):
     """
 	This function perform the simple beam hardening correction (BHC) corresponds to 
 	a polynomial correction, where the user can choose 4 parameters which define 
