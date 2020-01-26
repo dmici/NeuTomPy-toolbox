@@ -26,8 +26,8 @@ __all__     = ['draw_ROI',
 			   'remove_outliers_stack',
 			   'remove_stripe',
 			   'remove_stripe_stack',
-	       		   'simple_BHC'
-	       		   'zero_clipping_value'
+			   'simple_BHC',
+			   'zero_clipping_value'
 			  ]
 
 
@@ -1250,61 +1250,67 @@ def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
 
 def simple_BHC(norm, a0=0., a1=0., a2=0.02, a3=0., out=None):
     """
-	This function perform the simple beam hardening correction (BHC) corresponds to 
-	a polynomial correction, where the user can choose 4 parameters which define 
-	a 5-th order polynomial.
-	
+	This function performs the simple beam hardening correction (BHC) corresponding
+	to a polynomial correction.
+	The user can choose 4 parameters which define a 5-th order polynomial.
+
 	s = -ln(I/I 0 )
-        s’= s + a0*s^2 + a1*s^3 + a2*s^4 + a3*s^5
+    s'= s + a0*s^2 + a1*s^3 + a2*s^4 + a3*s^5
+
 	Parameters
 	----------
 	norm :  3d array
-		Three-dimensional stack of the normalized projections
-		
+			Three-dimensional stack of the normalized projections
+
 	a0 :    float, optional
-	        The first term of the polinom
-	        
+	        The first term of the polynomial
+
 	a1 :    float, optional
-	        The second term of the polinom
-	        
+	        The second term of the polynomial
+
 	a2 :    float, optional
-	        The third term of the polinom
-	        
+	        The third term of the polynomial
+
 	a3 :    float, optional
-	        The fourth term of the polinom
-	        
+	        The fourth term of the polynomial
+
 	Returns
 	-------
-	out : ndarray
+	out : 3d array
 	      Beam hardening correction (BHC) of the input array.
     """
-    
-    print('Simple beam hardening correction...')
+
+    a0 = np.float32(a0)
+    a1 = np.float32(a1)
+    a2 = np.float32(a2)
+    a3 = np.float32(a3)
     out = ne.evaluate('norm + a0*norm**2 + a1*norm**3 + a2*norm**4 + a3*norm**5', out=out)
+
     return out
+
 
 def zero_clipping_value(norm, cl=0.01, out=None):
     """
-	This function calculate the value that is clipped to a clipping value cl to prevent values 
-    	close to (or below) zero to introduce new artefacts. 
-	
-	s’ = MAX ( s, cl)
-        
+	This function clips the values in an array.
+	Values below the threshold value cl are replaced with cl.
+	This function prevents values close to (or below) zero to introduce new artefacts.
+
+	s' = MAX ( s, cl)
+
 	Parameters
 	----------
 	norm :  3d array
-		Three-dimensional stack of the normalized projections
-		
+			Three-dimensional stack of the normalized projections
+
 	cl :    float, optional
-	        Clipping value	       
-	        
+	        Clipping value
+
 	Returns
 	-------
-	out : ndarray
-	      Clipping value correction of the input array.
+	out : 3d array
+	      Clipping correction of the input array.
     """
-	
-    print('Clipping value correction...')
-    out = np.zeros(norm.shape, dtype=np.float32)
-    out = np.clip(norm, a_min=cl, a_max=norm.max())
+
+    cl  = np.float32(cl)
+    out = ne.evaluate( 'where(norm<cl, cl, norm)', out=out)
     return out
