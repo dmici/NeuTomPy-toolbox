@@ -1254,7 +1254,8 @@ def simple_BHC(norm, a0=0., a1=0., a2=0.02, a3=0., out=None):
 	to a polynomial correction.
 	The user can choose 4 parameters which define a 5-th order polynomial.
 
-	``s = -ln(I/I 0 )``
+	``s = -ln(I/I0 )``
+
     ``s'= s + a0*s^2 + a1*s^3 + a2*s^4 + a3*s^5``
 
 	Parameters
