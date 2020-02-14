@@ -1254,9 +1254,13 @@ def simple_BHC(norm, a0=0., a1=0., a2=0.02, a3=0., out=None):
 	to a polynomial correction.
 	The user can choose 4 parameters which define a 5-th order polynomial.
 
-	``s = -ln(I/I0 )``
+	.. math::
 
-    ``s'= s + a0*s^2 + a1*s^3 + a2*s^4 + a3*s^5``
+		s = -ln(I/I_0)
+
+	.. math::
+		s'= s + a_0 s^2 + a_1 s^3 + a_2 s^4 + a_3 s^5
+
 
 	Parameters
 	----------
@@ -1296,7 +1300,8 @@ def zero_clipping_value(norm, cl=0.01, out=None):
 	Values below the threshold value cl are replaced with cl.
 	This function prevents values close to (or below) zero to introduce new artefacts.
 
-	``s' = MAX ( s, cl)``
+	.. math::
+		s' = \max ( s, cl)
 
 	Parameters
 	----------
