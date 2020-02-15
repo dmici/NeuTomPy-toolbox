@@ -105,7 +105,7 @@ def draw_ROI(img, title, ratio=0.85):
 
 
 
-def _normalize (proj, dark, flat, mode='mean', min_denom=1.0e-6, out=None):
+def _normalize (proj, dark, flat, mode='mean', scattering_bias=0.0, min_denom=1.0e-6, out=None):
 	"""
 	This function computes the normalization  of the projection data using dark
 	and flat images by performing the ratio: (proj - dark) / (flat - dark).
@@ -118,6 +118,9 @@ def _normalize (proj, dark, flat, mode='mean', min_denom=1.0e-6, out=None):
 
 	if(min_denom<=0.0):
 		raise ValueError('The parameter min_ratio must be positive.')
+
+	if (scattering_bias<0.0):
+		raise ValueError('The parameter scattering_bias must be positive.')
 
 	if (mode == 'mean'):
 		func = np.mean
@@ -134,7 +137,10 @@ def _normalize (proj, dark, flat, mode='mean', min_denom=1.0e-6, out=None):
 
 	# numerator
 	out = np.zeros(proj.shape, dtype=np.float32)
-	out = ne.evaluate('proj-mean_dark', out = out)
+	if (scattering_bias == 0.0) :
+		out = ne.evaluate('proj-mean_dark', out = out)
+	else:
+		out = ne.evaluate('proj-mean_dark-scattering_bias', out = out)
 
 	# denominator
 	den = ne.evaluate('mean_flat-mean_dark')
@@ -147,7 +153,7 @@ def _normalize (proj, dark, flat, mode='mean', min_denom=1.0e-6, out=None):
 
 def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 						 dose_file='', dose_coor=(), dose_draw=True,
-						 crop_file='', crop_coor=(), crop_draw=True,
+						 crop_file='', crop_coor=(), crop_draw=True, scattering_bias=0.0,
 						 min_denom=1.0e-6,  min_ratio=1e-6, max_ratio=10.0,
 						 mode='mean', log=False,  sino_order=False, show_opt='mean'):
 	"""
@@ -206,6 +212,11 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 	crop_draw : bool, optional
 		If True the ROI to crop is selected interactively on the image by the user.
 		The default is True.
+
+	scattering_bias : float, optional
+		It allows to compensate uniform scattering by subtracting a constant value
+		from the raw projections.
+		Defalut value is ``0.0``.
 
 	min_denom : float, optional
 		Minimum permitted value of the denominator. It must be a small number
@@ -416,7 +427,7 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 
 	if (proj_c.shape[0] != 1):
 		print('> Normalization...')
-	out = _normalize(proj_c, dark_c, flat_c, mode, min_denom,  out=out)
+	out = _normalize(proj_c, dark_c, flat_c, mode=mode, min_denom=min_denom, scattering_bias=scattering_bias, out=out)
 
 	if(doseON):
 		if(proj.shape[0]==1):
