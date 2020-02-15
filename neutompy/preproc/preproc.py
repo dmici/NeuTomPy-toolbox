@@ -1251,15 +1251,14 @@ def remove_stripe_stack(arr, level, wname='db5', sigma=1.5, axis=1, out=None):
 def simple_BHC(norm, a0=0., a1=0., a2=0.02, a3=0., out=None):
     """
 	This function performs the simple beam hardening correction (BHC) corresponding
-	to a polynomial correction.
-	The user can choose 4 parameters which define a 5-th order polynomial.
+	to a polynomial correction, given by:
 
 	.. math::
 
-		s = -ln(I/I_0)
-
-	.. math::
 		s'= s + a_0 s^2 + a_1 s^3 + a_2 s^4 + a_3 s^5
+
+	where :math:`s = -\ln(I/I_0)`. The user can choose 4 parameters which define
+	the 5-th order polynomial.
 
 
 	Parameters

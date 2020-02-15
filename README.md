@@ -21,28 +21,28 @@ First of all, install a [conda](https://www.anaconda.com/download/) python envir
 
 It is required to install some dependencies, hence run the following inside a conda environment:
 ```  console
-$ conda install -c simpleitk simpleitk
-$ conda install -c astra-toolbox astra-toolbox
-$ conda install -c conda-forge ipython numpy numexpr matplotlib astropy tifffile opencv scikit-image read-roi mkl_fft scipy six tqdm pywavelets
+conda install -c simpleitk simpleitk
+conda install -c astra-toolbox astra-toolbox
+conda install -c conda-forge ipython numpy numexpr matplotlib astropy tifffile opencv scikit-image read-roi mkl_fft scipy six tqdm pywavelets
 ```
 
 Then install NeuTomPy toolbox via `pip`:
 
 ``` console
-$ pip install neutompy
+pip install neutompy
 ```
 
 NB: If a segmentation fault occurs when importing NeuTomPy, install PyQt5 via `pip`:
 
 ``` console
-$ pip install PyQt5
+pip install PyQt5
 ```
 
 # Update
 
 To update a NeuTomPy installation to the latest version run:
 ``` console
-$ pip install neutompy --upgrade
+pip install neutompy --upgrade
 ```
 
 # Documentation
