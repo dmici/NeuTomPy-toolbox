@@ -153,7 +153,8 @@ def _normalize (proj, dark, flat, mode='mean', scattering_bias=0.0, min_denom=1.
 
 def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 						 dose_file='', dose_coor=(), dose_draw=True,
-						 crop_file='', crop_coor=(), crop_draw=True, scattering_bias=0.0,
+						 crop_file='', crop_coor=(), crop_draw=True,
+						 scattering_bias=0.0, minus_log_lowest_val=None,
 						 min_denom=1.0e-6,  min_ratio=1e-6, max_ratio=10.0,
 						 mode='mean', log=False,  sino_order=False, show_opt='mean'):
 	"""
@@ -217,6 +218,13 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 		It allows to compensate uniform scattering by subtracting a constant value
 		from the raw projections.
 		Defalut value is ``0.0``.
+
+	minus_log_lowest_val: float, optional
+		Minimum permitted value of the -log-transform of the normalized data.
+		The parameter prevents values close to (or below) zero to introduce artefacts.
+		The clipping is ignored if minus_log_lowest_val is None or the variable
+		log is ``False``.
+		Default value is ``None``.
 
 	min_denom : float, optional
 		Minimum permitted value of the denominator. It must be a small number
@@ -292,6 +300,9 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 
 	>>> norm = ntp.normalize_proj(proj, dark, flat, dose_draw=False, crop_draw=False)
 	"""
+	if(minus_log_lowest_val is None):
+		minus_log_lowest_val = 0.0
+
 	if(min_ratio<=0.0):
 		raise ValueError('The parameter min_ratio must be positive.')
 	if(max_ratio<=0.0):
@@ -299,6 +310,9 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 
 	if(max_ratio<=min_ratio):
 		raise ValueError('Invalid values assigned to max_ratio and min_ratio.')
+
+	if(minus_log_lowest_val<0):
+		raise ValueError('The parameter minus_log_lowest_val must be positive.')
 
 	if not (proj.ndim == 3 and dark.ndim == 3 and flat.ndim == 3):
 		raise ValueError('All images stack must have three dimesions.')
@@ -446,6 +460,8 @@ def normalize_proj(proj, dark, flat,  proj_180=None, out=None,
 
 	if (log):
 		out = ne.evaluate('-log(out)', out=out)
+		if minus_log_lowest_val != 0.0:
+			out = zero_clipping_value(out, cl=minus_log_lowest_val, out=out)
 
 
 	if (sino_order):
