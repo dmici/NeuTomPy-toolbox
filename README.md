@@ -17,16 +17,25 @@ the need of users and researchers to compare state-of-the-art reconstruction met
 
 NeuTomPy toolbox supports **Linux**, **Windows** and **Mac OS** 64-bit operating systems.
 
-First of all, install a [conda](https://www.anaconda.com/download/) python environment with  **Python 3.5 or 3.6**.
+First of all, install a [conda](https://www.anaconda.com/download/) python environment with **Python 3.6** and then activate it:
 
-It is required to install some dependencies, hence run the following inside a conda environment:
+```
+conda create -n ntp_env python=3.6 
+conda activate ntp_env
+```
+
+Install some dependencies:
+
 ```
 conda install -c simpleitk simpleitk
+conda install scikit-image
+conda install ipython numexpr astropy tifffile mkl_fft  tqdm
 conda install -c astra-toolbox astra-toolbox
-conda install -c conda-forge ipython numpy numexpr matplotlib astropy tifffile opencv scikit-image read-roi mkl_fft scipy six tqdm pywavelets
+pip install opencv-python read-roi
+pip install -U numpy
 ```
 
-Then install NeuTomPy toolbox via `pip`:
+Finally, install NeuTomPy toolbox via `pip`:
 
 ```
 pip install neutompy
