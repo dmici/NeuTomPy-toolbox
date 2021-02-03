@@ -8,7 +8,7 @@ read-roi
 cython
 scipy
 six
-scikit-image
+scikit-image==0.15.0
 SimpleITK
 PyWavelets
 tqdm
